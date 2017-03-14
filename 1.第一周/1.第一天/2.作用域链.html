@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>作用域链</title>
+</head>
+<body>
+<script>
+    var nn=123; //全局变量
+
+    function fn(nn) {
+        /*var nn=666; //私有变量
+        console.log(nn);//666 */
+        /*nn=666;
+        console.log(nn);//666*/
+        console.log(nn);//undefined
+        nn=666;
+        console.log(nn);//666
+    }
+    fn();
+    console.log(nn);//123
+
+
+
+
+    var num=20;
+    function fun(num) { //fun 的私有变量 num=10
+        return function () {
+            ++num;
+/*            console.log(num);//11*/
+            console.log(num);// 21
+        }
+    }
+  /*  var f=fun(10);*/
+    var f=fun(num);
+    f();
+</script>
+</body>
+</html>

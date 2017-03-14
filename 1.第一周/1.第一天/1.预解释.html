@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预解释</title>
+</head>
+<body>
+<script>
+    console.log(num);//undefined
+    var num=123;
+    console.log(num);// 123
+
+    console.log(obj);//undefined
+    var obj={
+        name:'zhufeng'
+    };
+    console.log(obj);//Object  name: "zhufeng"  __proto__: Object
+
+
+    console.log(fn);//输出函数本身
+    fn();//function
+    function fn(a,b) {
+        console.log(name1);// undefined
+        var name1='nihao';
+        console.log(name1);// 'nihao'
+        console.log('function');
+    }
+    fn();//function
+    console.log(a,b);//报错  没有在全局中声明过
+    console.log(name1);//报错 Uncaught ReferenceError: name1 is not defined
+    console.log(fn);//函数本身
+</script>
+</body>
+</html>

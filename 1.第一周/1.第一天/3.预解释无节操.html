@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预解释无节操</title>
+</head>
+<body>
+<script>
+    //不管if条件是否成立 都会进行预解释
+    console.log(num);//undefined
+    if (false) {
+        var num=123
+    }
+    console.log(num);//undefined
+
+
+
+    console.log(fn);//undefined
+//  fn();// 报错 Uncaught TypeError: fn is not a function fn现在的值是undefined
+//     预解释的时候 不会声明 等号右边
+    var fn=function () { //到这一步才给fn赋值一个函数 预解释的时候并没有把等号右边的function当做函数进行预解释
+        console.log('function');
+    }
+    fn();
+    console.log(fn);// 输出函数本身
+
+
+    //return 下面的代码虽然不执行但也要进行预解释
+    function fn1() {
+        console.log(num);//undefined
+        return;
+        var num=123;
+    }
+    fn1();
+
+
+//    但是return右边不会进行预解释 因为把它当做一个值返回回去
+    function fn2() {
+        console.log(fn);//输出函数fn本身
+        function fn() {
+            console.log('fn');
+        }
+        var num=123;
+    }
+    fn2();
+
+
+
+    function fn3() {
+        console.log(fn);//报错: fn is not defined   return右边不会进行预解释 因为是把它当做一个值返回出去
+        return function fn() {
+            console.log('fn');
+        };
+        var num=123;
+    }
+    fn3();
+
+
+</script>
+</body>
+</html>
