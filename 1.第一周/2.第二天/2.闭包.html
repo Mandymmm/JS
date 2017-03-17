@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>闭包</title>
+</head>
+<body>
+<script>
+  /*  var name1='zhufeng';
+    function fn(name1) {
+        console.log(name1);//undefined
+        name1='bar'; //形参 私有的
+        console.log(name1);//'bar'
+    }
+    name1=123;
+    fn();
+    console.log(name1);// 123
+*/
+//    函数执行形成一个私有作用域 保护里面私有变量不受干扰的保护机制叫闭包
+/*
+
+    function fn1() {
+        function f() {
+            console.log('woshixiaof')
+        }
+        f();// 'woshixiaof'
+    }
+    fn1();
+    f();//报错 f is not defined
+
+*/
+
+    //全局的不可以修改私有的
+    function fn2() {
+        var num2=123;
+        return function () { //fn2的内部函数
+            num2+=3; //通过内部函数将私有的变量值改变了
+            console.log(num2);// 126
+        }
+    }
+    var f2=fn2();// fn2() => 代表的返回值 return后的function
+    f2();//=>return后的function执行
+    console.log(num2);//报错 num2 is not defined
+
+
+</script>
+</body>
+</html>

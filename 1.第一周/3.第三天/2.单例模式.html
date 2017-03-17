@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单例模式</title>
+</head>
+<body>
+<script>
+//    单例模式：把描述同一个事物（或同一个对象）的属性和方法放在一个内存空间，起到分组的作用
+//    即使属性名相同也不会产生冲突
+
+//    单例模式中把person1和person2称为'命名空间'
+
+    var person1={
+        name:'huge',
+        age:33
+    };
+    var person2={
+        name:'hahaha',
+        age:18
+    };
+
+//    '模块化开发'：项目中 开发模块比较多的时候，多人协作 每个人负责一个模块 最终将代码合在一起
+
+// 公共模块
+    var utils={
+        select:function () {
+
+        }
+    };
+
+
+//页卡模块中的change -> 实现选项卡切换
+    var tabRender={
+        change:function () {
+        //调用utils下的select方法
+            utils.select(); // 在当前模块调用其他模块的方法
+        }
+    };
+
+
+
+//搜索模块change -> 搜索内容变化处理的
+    var searchRender={
+        change:function () {
+        //在自己本模块中调用自己模块中的方法
+            this.clickEven();
+        },
+        clickEven:function () {
+
+        }
+    };
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>内存释放</title>
+</head>
+<body>
+<button id="btn">点点点</button>
+
+<script>
+    //    内存释放：
+    //    浏览器默认机制 ：每间隔一段时间 会把那些没有被占用的内存回收
+
+
+    //    堆内存的手动释放
+    var obj = {name: 'huge', age: 33};
+    var obj2 = obj;
+    obj = null; // null---空对象指针
+    obj2 = null;
+
+    //    内存销毁与不销毁
+    //    栈内存：
+    //            window（全局作用域） 在关闭浏览器的时候会销毁
+    //            一般情况下函数执行形成的私有作用域  执行完里面的代码之后立即销毁
+    /*
+     function fn(){
+     var count=0;
+     count++;
+     console.log(count);
+     }
+     fn();//执行完立即销毁
+     fn();//执行完立即销毁
+     fn();//执行完立即销毁
+     */
+
+/*
+    (function () {
+        var count=0;
+        function fn() {
+//            var count = 0;
+            count++;
+            console.log(count);
+        }
+
+        fn();// 1
+        fn();// 2
+        fn();// 3
+    })(); // 三个fn()全部执行完以后 外面函数才会销毁
+    */
+
+
+
+//形成不销毁栈内存
+
+//  在私有作用域（栈内存）中，返回一个引用数据类型 被外部接收  就不能被销毁
+
+/*
+    function fn() {
+        return {
+            name:'huge',
+            mess:'hello'
+        }
+    }
+    var f=fn();// fn形成的栈内存不销毁 因为里面的堆内存被外面的f引用了
+    console.log(f);
+    fn();// 这个fn形成的栈内存在执行完之后可以销毁
+    */
+
+
+// 不立即销毁 如果返回的是一个函数数据类型 要等返回值执行完后 fn才能销毁
+
+/*
+
+    function fn() {
+        var count=0;
+        return function () {
+            count++;
+            console.log(count);
+        }
+    }
+    var f=fn();//fn执行完形成的栈内存不能销毁
+    f();// 1
+    f();// 2
+    console.log(fn());//function () {count++;console.log(count);} 函数fn的返回值
+    fn()();// fn()() 是让fn的返回值执行 即执行return后面的function  输出结果为 1
+*/
+
+
+
+//
+    function fn() {
+        var count=0;
+        function f() {
+            console.log(++count);
+        }
+        window.ff =f;// window.ff  ff是全局变量
+    }
+    fn();
+
+
+//    给元素绑定事件的时候 也会涉及到 栈内存不销毁
+
+    var btn=document.getElementById('btn');
+    function fn1() {
+        var count=0;
+        function f1() {
+            console.log(++count);
+        }
+        btn.onclick=f1;
+    }
+    fn1();
+
+
+/*
+    function far() {
+        var count=0; // 1  2  3
+        function f2() {
+            console.log(++count);//第一次 ++0  第二次 ++1  第三次 ++2
+        }
+        return f2;
+    }
+    var fe=far();// fe代表的是函数far的返回值函数f2
+    fe(); // 函数执行输出1
+    fe(); // 2
+    fe(); // 3
+    var fe1=far();
+    fe1(); // 输出 1
+    fe1(); // 2
+    far()();// 输出 1
+    fe1(); // 3
+*/
+
+</script>
+</body>
+</html>

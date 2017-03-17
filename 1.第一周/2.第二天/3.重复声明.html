@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>重复声明</title>
+</head>
+<body>
+<script>
+//     预解释的时候，同一个变量名不重复声明 ，但是定义需要重复执行
+//    带var的 不重复声明
+//    带function的  不重复声明 但是重复定义
+
+/*
+//    预解释：
+//            function fn = log(2)地址 = log(12)地址 = log(13)地址 = log(123)地址
+//            var fn --> 不需要重复声明
+
+    console.log(fn);//输出函数本身 function fn() {console.log(123);}
+    fn();// 123
+    function fn() {console.log(2);}
+    fn();// 123
+    function fn() {console.log(12);}
+    fn();// 123
+    function fn() {console.log(13);}
+    var fn=223;//fn=223;
+    function fn() {console.log(123);}
+    console.log(fn);// 223
+    fn();//=> 223() 报错 fn is not a function  下面的代码不执行了
+    console.log(fn);// 如果上面不报错 这一步输出 223
+    */
+
+
+    function fn2(num) {
+        num=123;// 形参赋值时 num=20  到这一步重新赋值 修改为 num=123
+        var num=100; //num=100
+        return function () {
+            console.log(num); //
+        }
+    }
+    var f2=fn2(20); //将函数fn2的返回值赋给f2  即f2=return后面的function
+    f2(); //return后面的function执行  结果是输出 100
+
+
+
+    function fn3() { // A
+        console.log(2222);
+    }
+    fn3();// 输出6666
+    function fn3() { // B  相当于B把A覆盖掉了
+        console.log(6666);
+    }
+    fn3();// 输出6666
+
+
+    console.log(ni); // undefined
+    var ni=123;
+    console.log(ni); // 123
+    var ni=666;
+    console.log(ni); // 666
+</script>
+</body>
+</html>

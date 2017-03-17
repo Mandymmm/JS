@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>工厂模式</title>
+</head>
+<body>
+<script>
+//    单例模式：虽然解决了分组的作用  但是属于传统手工作业  不能实现批量生产  从而有  了工厂模式
+//    工厂模式：把实现 一个功能的代码 放到一个函数里面 减少冗余代码 ==> '函数封装'
+//    '高内聚低耦合'：减少页面中的重复代码，提高代码重复利用率
+
+    function createJSPerson(name,age) {
+        var obj={};
+        obj.name=name;
+        obj.age=age;
+        obj.writeJs=function () {
+            console.log('my name is '+this.name +',i can write js 啦~~');
+        };
+        return obj;
+    }
+    var p1=createJSPerson('huge',28);
+    p1.writeJs();
+    var p2=createJSPerson('hahaha',18);
+    p2.writeJs();
+
+
+
+</script>
+</body>
+</html>

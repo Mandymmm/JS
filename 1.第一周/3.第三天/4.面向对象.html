@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>面向对象</title>
+</head>
+<body>
+<script>
+//    面向对象
+//    在很多语言中都有面向对象
+//    对象是一个泛指  比如自然界
+//    类：对对象的具体细分  比如植物类 动物类 人类
+//    实例：类中某一个具体事物  比如 人
+//    类的 封装 继承 多态
+//    继承：子类继承父类
+//    多态：多种形态（重载和重写）js中没有重载
+//    重写： 子类重写父类
+
+    function  sum(num) {
+        if(typeof num === 'number'){
+            alert('这是一个数字');
+        }else if(typeof num === 'string'){
+            alert('这是个字符串');
+        }else {
+            alert('以上都不符合');
+        }
+    }
+    sum(11);
+    sum('11');
+    sun();
+
+
+
+    var ary1=[];
+    var ary2=new Array(1,2,3);
+    console.log(ary1);
+    console.log(ary2);
+</script>
+</body>
+</html>

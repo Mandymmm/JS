@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>构造函数基础</title>
+</head>
+<body>
+<script>
+//    构造函数目的：创建一个自定义类  并且创建这个类的实例
+    function CreatePerson(jname,age) {
+        //执行之前了浏览器默认会创建一个对象
+        this.name = name;
+        this.age = age;
+//        并且默认将这个对象返回
+    }
+//    在类中的this.xxx 是给当前实例添加属性  类中的this是当前实例
+
+//    类本身也是个函数 类都是函数数据类型的  返回的实例是对象数据类型
+
+
+    var person1=new CreatePerson('zhufeng',10);//构造函数模式 执行  它的返回值就是这个类的实例
+    var person2=new CreatePerson('huge',33);
+//    person1和person2 都是CreatePerson的实例
+    console.log(person1);
+    console.log(person2);
+
+    var person3=CreatePerson('hahaha',18);// 普通函数执行需要return来指定返回值  没有return 返回undefined  而构造函数不需要用return来返回 利用关键字new 默认返回一个对象
+    console.log(person3);// 函数里没有return 输出值为undefined
+
+
+
+/*
+//工厂模式和构造函数模式的区别：
+    1. 工厂模式是普通函数执行；而构造函数模式是通过关键字new来执行，默认创建一个对象，将其返回作为这个类的实例
+    2.执行的时候：
+                相同：都是 形成一个私有作用域 -> 形参赋值 -> 预解释 --> 代码从上到下执行
+                不同：构造函数模式执行的时候会默认创建一个对象并将其返回 即默认返回的实例；而工厂模式是自己手工创建
+
+
+    */
+
+    function CreatePerson(name,age) {
+        var num=123;
+        this.name=name;
+        this.age=age;
+    }
+    var person1=new CreatePerson('zhufeng',10);
+    var person2=new CreatePerson('huge',10);
+    console.log(person1);
+
+    console.log(person2 === person2);// false
+    console.log(person2.age === person1.age);// true
+//    每个实例都是一个独立的个体
+
+//  instanceof 用来检测一个实例是否属于这个类
+    console.log(person2 instanceof CreatePerson);// true
+    console.log(person1 instanceof CreatePerson);// true
+
+
+    var arr
+
+    // Object 是一个基类  每一个的对象数据类型都是Object的一个实例
+
+
+
+//    如果在类中手动返回一个引用数据类型的 就会将默认返回的对象覆盖掉 即返回的是指定的引用数据类型 而如果手动指定的是一个基本数据类型 则不会影响默认的返回对象 即仍然返回默认的对象
+</script>
+</body>
+</html>

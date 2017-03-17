@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>this</title>
+</head>
+<body>
+<button>点我</button>
+<div>赞我</div>
+<script>
+    // js中this是当前行为主体
+    console.log(this);// window
+    // 全局中的this是window  主要研究函数中的this
+
+//    (1) 函数执行的时候方法中的this要看函数执行的时候前面有没有“.”，如果前面有点“.”  点“.”前面是谁this就是谁
+//    【函数中的this 和函数在哪里执行没有任何关系  和函数在哪里定义也没有任何关系  只看执行的时候】
+
+    function fn() {
+        console.log(this);
+    }
+    fn();// 输出 window
+
+
+    function fn() {
+        console.log(this);// this指对象obj 输出结果为Object { }
+        console.log(this.name);// this.name => obj.name  输出结果是 'that'
+    }
+    var obj={fn:fn,name:'that'};
+    obj.fn();
+
+
+
+    function fn() {
+        console.log(this);// window
+        return function () {
+            console.log(this);// window
+        }
+    }
+    var ff=fn();
+    ff();
+
+
+    var obj={};
+    function fn() {
+        console.log(this);// window
+        return function () {
+            console.log(this);// window
+        }
+    }
+    var ff=fn();
+    ff();
+    obj.ff=ff;
+    obj.ff();// 执行输出this为 Object {}
+
+
+
+//    (2) 自执行函数里面的this永远是window
+
+    (function () {
+        console.log(this);// window
+    })();
+
+
+    function fe() {
+        (function () {
+            console.log(this);// window
+        })();
+    }
+    fe();
+
+
+    var obj={
+        fn:(function () {
+            console.log(this);// window
+            return function () {
+                console.log(this);// obj
+            }
+        })()
+    };
+    obj.fn();
+
+
+//    (3) 给元素绑定事件，事件触发的时候 里面的this就是当前绑定事件的元素
+
+    var btn=document.getElementsByTagName('button');
+
+
+
+    btn.onclick=function () {
+        console.log(this);// button元素
+        ff();
+    };
+    function ff() {
+        console.log(this);// window
+    }
+
+
+
+    function ff() {
+        console.log(this);// button元素
+    }
+    var obj={fs:ff};
+    btn.onclick=obj.fs;
+
+
+
+    btn.onclick=(function () {
+        console.log(this);// window
+        return function () {
+            console.log(this);// button元素
+        }
+    })();
+
+
+
+    var oDiv=document.getElementsByTagName('div');
+    btn.onclick=oDiv.onclick=function () {
+        console.log(this);// 点哪个元素this就是哪个元素
+    };
+
+
+
+//    (4) 定时器里的this是window
+
+    setTimeout(function () {
+        console.log(this);// window
+    },1000);
+
+    window.setTimeout(function () {
+        console.log(this);// window
+    },1500);
+
+
+
+    function fnn() {
+        setTimeout(function () {
+            console.log(this);// window
+        },1000);
+    }
+    fnn();
+
+
+
+
+    var ff=function () {
+        console.log(this);// window
+    }
+    function bar(fe) {
+        fe();
+    }
+    bar(ff);
+
+
+//    (5) 在类中的this.xxx 是给当前实例添加属性 类中的this是当前实例
+
+    /////////////////////////////////
+
+    var obj={
+        name:'zhufeng',
+        age:'18',
+        mess:'北京欢迎你',
+        fn:function () {
+            console.log('你好我叫 '+ this.name +'我今年' + this.age +' say ' + this.mess);
+        }
+    };
+    var obj1={
+        name:'huge',
+        age:'33',
+        mess:'上海欢迎你',
+        fn:obj.fn
+    };
+    obj.fn();// 执行输出为 你好我叫zhufeng 我今年18 say北京欢迎你
+    obj1.fn();// 执行输出为 你好我叫huge 我今年33 say上海欢迎你
+
+
+
+    var len=5;
+    var fn=function () {
+        console.log(this);
+    };
+    var main={
+        fn:function (fn) {
+            console.log(this);// Object{} --> main
+            fn();// window
+            arguments[0]();//获取函数第一个参数 并且让它执行  执行输出结果为arguments  arguments[0]() ==> arguments.0()
+        },
+        len:10
+    };
+    main.fn(fn);
+
+
+
+    function fn1() {
+        console.log(this);
+    }
+    function fn2() { console.log(this); }
+    function fn3() { }
+    function fn4() { }
+    var ary=[fn1,fn2,fn3,fn4];
+    ary[0]();// 执行输出this为 ary   ary[0]()==>ary.fn1()
+    var arry=ary[1];  // var arry=function fn2() { }
+    arry(); // 执行输出this为window  arry() ==> fn2()
+
+
+
+
+    var num = 5; // 6 -> 7
+    var obj = {
+        num : 4, // 5
+        fn : (function (num){
+            num++;
+            this.num++; // 自执行函数中this是window  ==>window.num++ -->6
+            var num = 2; // num = 2 -> 3 -> 4
+            return function (){
+                num++; // 2++ -> 3++
+                this.num++; // window.num++ 6++ // obj.num++  4++
+                console.log(num); // 3 // 4
+            }
+        })()
+    };
+    var fn = obj.fn;
+    fn(); // 3
+    obj.fn(); // 4
+    console.log(this.num,obj.num); // 7 5
+
+
+
+    var num = 1;// -> 3 -> 5
+    var obj = {num : 2};// -> 4
+    obj.fn = (function (num){ // 1
+        // var num = 0;
+        this.num += 2;// window.num
+        num--; // 1-- ->0
+        return function (n){ // 1 // 2
+            this.num += 2;// 执行fn(1)的时候 => window.num 即this指的是window // 而执行obj.fn(2)的时候 => obj.num 即this指的是obj
+            num--; // 0-- ->-1
+            console.log(n + ++num);// 1+ ++(-1)=1 // 2+ ++(-1)=2
+        }
+    })(this.num);// window.num
+
+    var fn = obj.fn;// fn=return后面的函数function
+    fn(1); // 执行输出结果为1
+    obj.fn(2);// 执行输出结果为2  [执行的时候 return后面的function里面的this此时指的是obj 而不是window]
+    console.log(num,obj.num); // 5  4
+
+    var num = 20;
+    var obj = {
+        num: 30,// -> 120
+        fn: (function (num) { //num=20
+            this.num *= 3; //window.num  20*3=60
+            num += 15; // 20+15=35 此时私有变量num=35
+            var num = 45; // 重新给私有变量num赋值为45 覆盖了上面的35 // -> 65
+            return function () {
+                this.num *= 4;//执行fn()的时候 => window.num 即this指的是window 60*4=240 // 执行obj.fn()的时候 => obj.num 即this指的是obj 30*4=120
+                num += 20;// 执行fn()的时候 上级作用域查找到num=45 45+20=65 // 执行obj.fn()的时候 65+20=85
+                console.log(num);
+            }
+        })(num)// num=20
+    };
+    var fn = obj.fn;
+    fn();// 执行 输出结果为 65
+    obj.fn();// 执行 输出结果为 85
+    console.log(window.num, obj.num);// 240  120
+
+
+</script>
+</body>
+</html>

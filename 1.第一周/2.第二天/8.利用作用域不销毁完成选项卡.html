@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>利用作用域不销毁完成选项卡</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        body{
+            font:12px/1.5 "Microsoft YaHei";
+            background-color: #4e91d7;
+        }
+        .clearfix:after{
+            display: block;
+            content: "";
+            clear: both;
+            height:0;
+            visibility: hidden;
+        }
+        .box{
+            overflow: hidden;
+            margin:20px auto;
+            width:300px;
+            border:1px solid #ebebeb;
+            border-radius: 3px;
+            background-color: #fff;
+        }
+        ul{
+            list-style: none;
+            width:302px;
+            background-color: #fcfcfc;
+        }
+        li{
+            float: left;
+            width:74px;
+            border-bottom:1px solid #ebebeb;
+            line-height:41px;
+            text-align: center;
+            cursor: pointer;
+        }
+        p{
+            display: none;
+            line-height:41px;
+            text-align: center;
+        }
+        li.cur{
+            margin-left:-1px;
+            padding-right:2px;
+            border-bottom-color: #fff;
+            border-left:1px solid #ebebeb;
+            border-right:1px solid #ebebeb;
+            width:150px;
+            background-color: #fff;
+        }
+        p.cur{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <ul class="clearfix">
+        <li>我的小组</li>
+        <li class="cur">小组更新</li>
+        <li>热门话题</li>
+    </ul>
+    <p>我的小组</p>
+    <p class="cur">小组更新</p>
+    <p>热门话题</p>
+</div>
+
+
+<script>
+    var oLis=document.querySelectorAll('li'),oPs=document.querySelectorAll('p');
+
+//   作用域方式一  利用不销毁的作用域
+    for (var i=0;i<oLis.length;i++) {
+        oLis[i].onclick = (function (n) { //让li在外面接收  每一次自执行函数里返回的内部函数  导致当前自执行函数形成的作用域不能销毁
+            return function () {
+                for (var j = 0; j < oLis.length; j++) {
+                    oLis[j].className = '';
+                    oPs[j].className = '';
+                }
+                this.className = 'cur';
+                oPs[n].className = 'cur';
+            }
+        })(i);
+    }
+
+//   作用域方式二  利用不销毁的作用域
+    for (var i=0;i<oLis.length;i++) { //每一轮都会形成一个不销毁的作用域
+        (function (n) {
+            oLis[i].onclick = function () { //我们主动跑到里面来占用  在这里定义function 并把for循环的每一轮i的值传递进来  赋给每一个不销毁的作用域里的形参n来保存当前这一轮i的值
+                for (var j = 0; j < oLis.length; j++) {
+                    oLis[j].className = '';
+                    oPs[j].className = '';
+                }
+                this.className = 'cur';
+                oPs[n].className = 'cur';
+            }
+        })(i);
+    }
+
+//    这两种利用不销毁作用域来实现的方式都会形成多个不销毁的内存  没有之前的自定义属性节省内存 推荐使用自定义属性的方式来实现
+</script>
+</body>
+</html>

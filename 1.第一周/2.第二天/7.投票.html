@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>投票</title>
+
+</head>
+<body>
+<p>点赞<span id="totals">0</span></p>
+<button>点赞</button>
+
+<script>
+    var btn=document.getElementsByTagName('button')[0];
+    var totals=document.getElementById('totals');
+
+//    利用全局作用域不销毁的情况 来保存每一次修改后的count的值
+  /*
+    var count=0;
+    btn.onclick=function () {
+        count++;
+        totals.innerHTML=count;
+    }
+*/
+
+//  自己创建一个不销毁的作用域 来保存每一次修改后的count的值
+  /*
+    ;(function () {
+        var count=0;
+        function f() {
+            count++;
+            totals.innerHTML=count;
+        }
+        btn.onclick=f;
+    })();
+  */
+
+//    btn主动去里面占用自执行函数里定义的function
+    /*
+    ;(function () {
+        var count=0;
+        btn.onclick=function () {
+            count++;
+            totals.innerHTML=count;
+        };
+    })()
+*/
+
+//     btn在外面等着 自执行函数主动将在它里面定义的function让btn接收
+   /*
+    btn.onclick=(function () {
+        console.log(123);// 只输出一次123 因为自执行函数是自己自动执行一次 而每次点击按钮执行的都是外面function的返回值 即return后面的函数function
+        var count=0;
+        return  function () {
+            count++;
+            totals.innerHTML=count;
+        };
+    })()
+    console.log(btn.onclick); // function () {count++;totals.innerHTML=count;}
+*/
+
+
+//  不考虑栈内存不销毁的话  可以用如下方法实现效果：
+
+//    利用自身内容加1
+    /*
+    btn.onclick=function () {
+        totals.innerHTML=++totals.innerHTML;
+    }
+*/
+
+//    利用自定义属性
+   btn.count=0;
+   btn.onclick=function () {
+       totals.innerHTML=++this.count;
+   }
+
+</script>
+</body>
+</html>

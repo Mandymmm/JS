@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>作用域练习题</title>
+</head>
+<body>
+<script>
+    /*
+    function foo() {
+        var num=0;
+        function f() {
+            console.log(num+=5);
+        }
+        return f;
+    }
+
+    var fo1=foo();//形成第一个不销毁的栈内存
+    fo1();// 5
+    fo1();// 10
+    var fo2=foo();//形成第二个不销毁的栈内存
+    fo2();// 5
+    fo1=fo2;//改变了fo1指向的地址 也就说明我第一个不销毁栈内存里的堆内存就不被占用了  那么第一个foo就可以销毁了
+    fo1();// 10
+    */
+
+   /*
+    var fer1;
+    function far() {
+        var count=0; // 1
+        function ff() {
+            console.log(count++);
+        }
+//        window.fer1=ff;
+        fer1=ff;
+    }
+    far();
+    fer1();// 执行输出0
+    fer1();// 1
+*/
+
+
+/*
+
+   function fn() {
+       var count=0;
+       return function (n) {
+           count++;
+           console.log(count+n);
+       }
+   }
+   var f1=fn();
+   f1(10);// 11
+   f1(6);// 8
+   var f2=fn();
+   f2(10);// 11
+   f2(1);// 3
+   f1=f2;
+   f1(15);// 18
+   fn()(9);// 10
+*/
+
+/*
+    var num=12;
+    var obj={
+        num:3,
+        bar:(function (n) {
+            return function (k) {
+                console.log(k+n);
+            }
+        })(window.num)
+    }
+    obj.bar(1);// 13
+    obj.bar(2);// 14
+    var fn3=obj.bar;
+    fn3(2);// 14
+    fn3(4);// 16
+
+    var num=12;
+    var obj={
+        num:3,
+        bar:(function (n) {
+            return function (k) {
+                console.log(k+(++n));
+            }
+        })(window.num)
+    }
+    obj.bar(1);// 14=1+13
+    obj.bar(2);// 16=2+14
+    var fn3=obj.bar;
+    fn3(2);// 17=2+15
+    fn3(4);// 20=4+16
+    */
+
+
+    function foo(m) {
+        return function (n) {
+            console.log(n+ ++m);
+        }
+    }
+    var f=foo(5);
+    f(4);// 10  m=5 ++m m=6 4+6=10
+    var f1=f;
+    f(3);// 10  m=6 ++m m=7 3+7=10  作用域foo()不销毁  每轮m的值累加
+    f1(2);// 10 m=7 ++m m=8 2+8=10
+    foo(3)(2);// 6 m=3 ++m m=4 2+4=6   函数foo又执行一次形成一个新的作用域foo() 此时m=3
+</script>
+</body>
+</html>
