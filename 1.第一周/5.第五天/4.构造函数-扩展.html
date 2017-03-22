@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>构造函数-扩展</title>
+</head>
+<body>
+<script>
+    /*
+     function Fn(name) {
+     var school='珠峰';//school仅仅是私有作用域中的一个私有变量，在函数体中只有this.xxx=xxx才是在给实例设置私有的属性，而私有变量和实例没有必然的联系
+     this.name=name;
+     this.say=function () {
+     console.log('my name is'+this.name+',i study in the '+school);
+     }
+     }
+     var f1=new Fn('gg');
+     var f2=new Fn('ee');
+     */
+
+
+    /* console.log(f1.name);
+     f1.say();//函数里的this指向f1
+     */
+
+
+    /*  console.log(f1.say===f2.say);//->false  实例之间是相互独立的，互不影响，this.xxx=xxx其实是给实例增加的私有属性
+     */
+
+
+    /*console.log(f1.school);//->undefined 属性名不存在，获取的结果是undefined 而不是报错
+     ==> 函数具备多种角色：普通函数、类  【不同的角色之间没有必然的联系】
+     */
+
+
+    function Fn(name) {
+        var school = '珠峰';
+        this.name = name;
+        this.say = function () {
+            console.log('my name is' + this.name + ',i study in the ' + school);
+        }
+//        return 1;
+//        return {name: 'zhufeng'};
+    }
+    var f1 = new Fn('gg');
+    //    console.log(f1);//->仍然输出实例 ==> 如果我们手动返回的结果是一个基本数类型值，对最后的实例没有任何影响
+//    console.log(f1);//->输出新的对象 ==> 如果我们手动返回的结果是一个引用数据类型的值，会把默认返回的实例给覆盖掉，此时的f1就不是类的实例了
+
+
+    console.log('say' in f1);// true  用in检测name是否为f1的一个属性
+    console.log(f1.hasOwnProperty('say'));// true  用hasOwnProperty检测属性是否为对象(实例)的私有属性
+    /*
+     * in: 不管当前的属性是私有的还是公有的，只要有 返回的结果就是true
+     * hasOwnProperty: 只有是私有的属性才会返回true，即使公有里有这个属性，但是如果私有中没有，返回结果也是false
+     *
+     * */
+
+    //检测某一个对象是否拥有某一个公有属性：创建一个函数，检测attr是否为obj的公有属性
+    function hasPublicProperty(obj, attr) {
+        return (attr in obj) && !obj.hasOwnProperty(attr);
+    }
+    hasPublicProperty(f1,'say');// false
+
+</script>
+</body>
+</html>

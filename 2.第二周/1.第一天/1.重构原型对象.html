@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>重构原型对象</title>
+</head>
+<body>
+<script>
+    function Fn() {
+
+    }
+//    var f1=new Fn;
+//    console.log(Fn.prototype);//每个类天生自带的属性 浏览器为它开辟了一个堆内存 ，里面有天生自带的属性 constructor ，constructor的属性值 指向当前函数（类）本身
+    Fn.prototype={
+//        constructor:Fn, 为了和原来一样  就自己手动在 自己为Fn.prototype开辟的堆内存里添加constructor 并且指向Fn  这样f1.constructor找到的仍然是Fn函数本身
+        y:10
+    }//手动开辟一个堆内存，并且赋给Fn.prototype，这样Fn的原型对应的对象就改变了 不再是浏览器天生开辟的了，
+
+    var f1=new Fn;
+    console.log(Fn.prototype);
+
+//    重构原型对象：自己开辟的堆内存 来存储公有的属性和方法  将浏览器天生为Fn.prototype开辟的堆内存替换掉
+    console.log(f1.constructor);//由于我们为Fn.prototype新开辟了一个堆内存，所以最终通过原型链查找constructor这个属性  找到的是Object.prototype上的constructor 即 f1.constructor => function Object{ }
+
+    // 只有浏览器天生为Fn.prototype开辟的堆内存才有constructor这个属性，而我们手动开辟的堆内存没有constructor这个属性，但是也可以手动添加这个属性，属性值可以设置为当前函数Fn本身
+
+</script>
+</body>
+</html>

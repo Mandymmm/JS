@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test3</title>
+</head>
+<body>
+<script>
+    var ary = [100, 200];
+    ~function (ary) {
+        ary.length--;//删除数组最后一项
+        ary = [];
+        ary[ary.length] = 300;
+        alert(ary);//[300]
+    }(ary);
+    alert(ary);//[100]
+</script>
+</body>
+</html>

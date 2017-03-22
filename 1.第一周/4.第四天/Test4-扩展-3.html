@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>扩展3</title>
+</head>
+<body>
+<script>
+    var i = 2;
+    function fn(i) {
+        i *= 2;
+        return function (n) {
+            console.log(n * (++i));
+        }
+    }
+    var f = fn(5);
+    f(3);//33
+    fn(5)(3);//33
+    f(4);//48
+    fn(5)(4);//44
+</script>
+</body>
+</html>

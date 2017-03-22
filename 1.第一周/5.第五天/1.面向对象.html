@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>面向对象</title>
+</head>
+<body>
+<script>
+    //研究数组：创建数组类Array的一个实例（创建数组）
+    var ary=[12,23];//字面量创建方式
+    var ary2=new Array(12);//实例创建方式（面向对象创建方式）
+    //new Array(12) 括号中如果是一个数字，则是设定数组的长度，而不是给增加值；
+    //new Array('12') 这样是给数组第一项设定为'12',数组长度为1
+    //new Array(12,23) 如果是两项或多项数字，则是数组有对应的项；这样写是数组有两项，分别为12,23
+    console.dir(ary);
+    console.dir(ary2);
+</script>
+</body>
+</html>

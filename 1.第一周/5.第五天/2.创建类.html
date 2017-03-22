@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>创建类</title>
+</head>
+<body>
+<script>
+    //创建的类第一个字母最好大写
+    function Person() {
+        //看不见：var obj={}  this->obj
+
+
+        //看不见：return obj;/ return this;
+    }
+
+    var a=Person();//此时的Person仅仅是一个普通的函数 -> 走的是函数那一套流程：创建私有的作用域->形参赋值/预解释->从上到下依次执行代码(私有变量还是全局变量=>作用域链)->作用域是否销毁
+    console.log(a);// undefined 因为函数执行的时候没有返回值
+
+    var p=new Person();//这样执行Person就是一个类了 ，它的执行步骤：
+    // 1）也和普通函数执行一样，创建一个私有的作用域，进行形参赋值和预解释
+    // 2）new 这样执行，在预解释完成后(代码执行之前)，浏览器会默认的在私有作用域当中创建一个对象，而且函数中的this就指向这个对象
+    // 3）然后再和普通函数一样，代码从上到下执行（作用域链）
+    // 4）new 这样执行，在代码执行完成后，会默认的把第2步中我们创建的这个对象返回
+
+    //==>这种执行方式叫做构造函数模式，new Person()就是一个类（自定义类），而返回的结果p就是当前类的一个实例
+
+    console.log(p);// Person{}
+
+
+    /*
+    * this问题：
+    *   普通函数执行，方法中的this取决于函数执行的时候前面是否有“.”，有的话点前面是谁，this就指向谁，没有的话this指向window
+    *   构造函数模式下，方法中的this指向的是当前类的一个实例
+    * */
+
+    var per1=new Person();
+    var per2=new Person;
+    //在构造函数模式执行的时候，如果不需要传递参数，后面的小括号可加可不加，没什么区别
+</script>
+</body>
+</html>

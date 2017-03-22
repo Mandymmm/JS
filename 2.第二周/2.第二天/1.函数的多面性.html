@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>函数的多面性</title>
+</head>
+<body>
+<script>
+    //所有的对象数据类型(普通对象、实例、prototype、函数)都是Object基类的一个实例
+    //所有的函数数据类型(普通函数、类(内置类、自定义类))都是Function的一个实例
+    //所有的实例都是对象数据类型，函数和类都是Function发实例，所以函数也是对象数据类型的值
+
+    //函数的多面性
+//    1.普通函数 ： --> 形成一个私有作用域，形参赋值，预解释，代码从上到下执行
+//    2.类 ： --> 具有原型链模式 、类和实例的概念
+//    3.作为一个普通对象： --> 当做一个对象给他添加属性
+//    【三者之间互不影响】
+
+/*
+    function Fn() {
+        var info='zhufeng';
+    }
+    Fn();
+
+    Fn.prototype.say=function () {
+        console.log('say');
+    };
+    Fn.prototype.num=666;
+    Function.prototype.num=888;
+    Object.prototype.num=777;//如果Function原型上没有888 ，那么找到并输出的就是777
+//    Fn.num=123; // 把Fn当做一个普通的对象  给它添加一个属性num 属性值为123
+    var f1=new Fn();
+    console.log(Fn.num);// 888 Fn所属类是Function 所以当Fn自身私有属性没有num的时候 通过__proto__查找它所属类Function的原型上的公有属性
+    console.log(f1.num);// 666
+    console.dir(Fn);
+*/
+
+
+
+    function Fn() {
+        var num;//Fn执行的时候形成的私有变量
+        this.num=200;
+        num=300;
+        this.say=function () {
+            this.num=15;
+            console.log(this.num);
+            console.log(Fn.num);//把Fn当做一个对象  找一个叫做num的属性
+        }
+    }
+    var f1=new Fn();
+    Fn.prototype.num=100;// 作为一个类在原型上添加一个公有属性 num
+    num=400; //代码从上到下执行 全局中的num先是400  然后Fn()执行 Fn函数体里面的this.num=200=>window.num=200 即 全局中的num被重新赋值为200
+    Fn.num=111;//作为一个对象 给Fn自身添加属性
+    Fn();
+    f1.say();// 15 111
+    console.log(num);// 200
+    console.log(f1.num);// 15
+</script>
+</body>
+</html>

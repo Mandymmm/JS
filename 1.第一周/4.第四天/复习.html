@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>复习</title>
+</head>
+<body>
+<script>
+   /* var ary=[1,2,3,4];//一维数组  每一项都是值类型数据
+    var ary2=[1,2,{name:huge}];//二维
+    var ary3=[1,2,{name:huge,f:[1,3]}];//多维数组 对象里面还有一个数组  数组包对象且对象里包数组
+*/
+
+ /*   document.documentElement --> html
+    document.body ---> body*/
+
+
+/*
+
+ // in
+    var obj={
+        name:'huge',
+        age:33
+    };
+    console.log('name' in obj);// true
+    console.log('sex' in obj);// false
+    console.log(name in obj);// window.name in obj   window自带属性name window.name=‘’ 所以返回false
+   //如果name不加引号它的意思是把name这个变量存储的值作为检测的依据，来检测存储的这个值是否为obj的一个属性，加引号'name'就是属性名，验证obj中是否有name这个属性
+   console.log(age in obj);// 报错 age is not defined
+*/
+
+
+ //获取当前元素的上一个哥哥元素节点 用函数解决previousElementSibling不兼容
+   function prev(curEle) { // curEle --> currentElement 当前元素
+        if('previousElementSibling' in curEle) { // 条件成立说明兼容，可以直接使用previousElementSibling这个属性获取上一个元素节点
+            return curEle.previousElementSibling;
+        }
+        // 不兼容
+        var pre=curEle.previousSibling;//获取上一个哥哥节点
+        while (pre && pre.nodeType !== 1) {
+            /*
+            条件：
+            pre 先确定有没有获取到 如果pre为true 证明它不为空(空null为false) 也可以写成!!pre
+            pre.nodeType!== 1 -- :不是元素 还没有找到 继续向上寻找
+             */
+            pre = pre.previousSibling;
+        }
+        return pre;
+    }
+
+    function prev(curEle) {
+        if('previousElementSibling' in curEle) {
+            return curEle.previousElementSibling;
+        }
+        var pre=curEle.previousSibling;
+        while (pre && pre.nodeType !== 1){
+            pre=pre.previousSibling;
+        }
+        return pre;
+    }
+
+
+
+
+//   "use strict";
+   function fn(a,b,c) {
+        //非严格模式下：
+//        1）arguments 和形参存在映射的关系：一个改变另外一个也跟着改变
+        console.log(arguments[0]);//12
+        a=120;
+        console.log(arguments[0]);//120
+        arguments[1]=230;
+        console.log(b);// 230
+
+       //严格模式下: 在前加"use strict"; ---> 使用JS中的严格模式
+//        1)arguments和形参之间没有映射关系
+        console.log(arguments[0]);//12
+        a=120;
+        console.log(arguments[0]);//12
+        arguments[1]=230;
+        console.log(b);// 23
+
+
+
+        //arguments.callee:指向的是当前函数本身，这里代表的就是当前的函数fn
+        console.log(arguments.callee);
+
+
+        //arguments.callee.caller ：当前函数是在哪个函数里执行的 那么caller就指向这个函数 ， 如果是在window下执行的，caller的值就是null
+        console.log(arguments.callee.caller); //输出的是sum函数本身
+
+    }
+// arguments的callee和caller属性 在严格模式下不允许使用 会报错：Uncaught TypeError: 'caller', 'callee', and 'arguments' properties may not be accessed on strict mode functions or the arguments objects for calls to them
+
+    function sum() {
+        fn(12,23,34);
+    }
+    sum();
+</script>
+</body>
+</html>

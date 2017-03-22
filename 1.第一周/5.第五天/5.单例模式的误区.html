@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单例模式的误区</title>
+</head>
+<body>
+<script>
+   // 单例模式
+    var personRender={
+
+    };
+
+    var studentRender=(function () {
+        return {
+
+        }
+    })()
+
+
+    //构造函数模式 （有一些面试官认为这个才是单例模式）
+    function Person() {
+
+    }
+    var p=new Person();
+
+    //什么叫做闭包
+    //函数执行形成一个私有作用域 =>闭包
+   function fn() {
+
+   }
+   fn();
+
+   //外界的面试官很多都认为只有形成一个不销毁的私有作用域才叫做闭包
+   (function () {
+
+   })();
+
+   function fn() {
+       return function(){
+
+       }
+   }
+   var f=fn();
+</script>
+</body>
+</html>

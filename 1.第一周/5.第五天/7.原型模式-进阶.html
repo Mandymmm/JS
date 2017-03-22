@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>原型进阶</title>
+</head>
+<body>
+<script>
+    /*
+     // 构造原型模式-->面向对象开发
+     function Fn() {
+     this.n=100;
+     }
+     Fn.prototype.m=200;
+     var f=new Fn();
+     */
+
+
+    function Fn() {
+        this.n = 100;
+    }
+    Fn.prototype.m = 200;
+    var f = new Fn();
+
+    console.log(f.hasOwnProperty('n'));// true
+
+    /*
+    //在内置类的原型上扩展一个方法来完善内置类的不足 :
+        如果这个方法内置类原型上已经有了，我们这样操作会把之前的覆盖掉，这样非常不好，所以我们在取方法名的时候最好加一个特殊的前缀“my”  为了和原型上的自带属性显示格式一致，一般函数名与自定义的属性名一致
+*/
+    //检测某一个对象是否拥有某一个公有属性
+    Object.prototype.myHasPublicProperty=function myHasPublicProperty() {
+        var attr=arguments[0];//相当于定义形参 利用arguments来接收值
+
+        return (attr in this) && !this.hasOwnProperty(attr);//this 是需要处理的那个实例(对象)
+    };
+
+/*
+
+    * 思考题：
+    * 1.数组中存在一个方法slice(),在一个数组中进行查找，找到我们需要的部分，最后返回一个新数组，原来数组不变
+    *   ary.slice()
+    *   ary.slice(n)
+    *   ary.slice(n,m)
+    *       ->如果n或者m或者两者都是负数呢
+    *       ->如果是小数呢
+    *       ->如果是非有效数字呢
+    *       ->如果传递的n>m呢
+    *       ->如果传递的n或者m或者两者都大于最大长度呢
+    *       ->....
+    *
+*/
+
+    Array.prototype.mySlice=function mySlice() {
+        /*实现你的代码，完成和内置slice一模一样的功能：要求尽可能的考虑更多情况、不能使用数组中内置的方法*/
+    }
+</script>
+</body>
+</html>

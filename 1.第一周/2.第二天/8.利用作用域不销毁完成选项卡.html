@@ -103,7 +103,22 @@
         })(i);
     }
 
-//    这两种利用不销毁作用域来实现的方式都会形成多个不销毁的内存  没有之前的自定义属性节省内存 推荐使用自定义属性的方式来实现
+//    利用自定义属性
+    for (var i=0;i<oLis.length;i++){
+        oLis[i].index=i;
+        oLis[i].onclick=function () {
+            for (var j=0;j<oLis.length;j++){
+                oLis[j].className='';
+                oPs[j].className='';
+            }
+            this.className='cur';
+            oPs[this.index].className='cur';
+        }
+
+    }
+
+
+    //    这两种利用不销毁作用域来实现的方式都会形成多个不销毁的内存  没有之前的自定义属性节省内存 推荐使用自定义属性的方式来实现
 </script>
 </body>
 </html>

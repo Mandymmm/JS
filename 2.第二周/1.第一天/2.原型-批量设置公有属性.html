@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>批量设置公有属性</title>
+</head>
+<body>
+<script>
+    function Fn() {
+
+    }
+
+/*    Fn.prototype.x=10;
+    Fn.prototype.y=30;
+    Fn.prototype.z=60;*/
+
+    //批量添加公有属性
+    Fn.prototype={
+        constructor:Fn,// 这种方法需要手动添加constructor属性及其指向(当前函数)
+        x:10,
+        y:30,
+        z:60
+    }
+
+
+    //如果用这种重构原型对象的方法给内置类批量添加公有属性和方法，不会生效，被浏览器屏蔽掉了
+    // --- 因为如果我们自己手动为内置类原型重新开辟一个堆内存，就会将内置类修改，会将浏览器天生给它开辟的原型所对应的对象替换掉，导致内置类原有的属性和方法都被替换 被影响
+    // 所以给内置类添加公有属性和方法的时候，不能使用重构原型对象的方式，而是需要一个一个添加
+    Array.prototype.mySlice=function mySlice() { //一个一个添加
+        console.log('mySlice');
+    };
+    [].mySlice();
+
+
+
+    Array.prototype={ //不能使用
+        mySlice:function () {
+            console.log('mySlice');
+        }
+    };
+    [].mySlice();//不生效
+
+
+    //如果我们手动新添加的属性名和内置类原型上已有的属性相同，那么原有的属性就会被后面新添加的属性覆盖掉
+    // --- 所以 在内置类的原型上添加属性和方法的时候，要注意命名 -->可以加前缀
+    Array.prototype.slice=function () {
+        console.log('mySlice');
+        return 123;
+    };
+    console.log([1,2,3].slice());//Array原型上原有的slice方法被覆盖掉
+
+
+
+
+</script>
+</body>
+</html>

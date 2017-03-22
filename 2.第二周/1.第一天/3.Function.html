@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Function</title>
+</head>
+<body>
+<script>
+    //所有的对象数据类型（普通对象，实例，原型...）都是Object的一个实例
+
+    var arr1=[];
+    var arr2=[1,2];
+    //都是Array的实例
+
+
+    function Fn() {
+
+    }
+    console.dir(Fn);
+    //所有函数数据类型（普通函数、类（内置类、自定义类）），都是Function这个类的一个实例
+    //所有实例都是对象数据类型的 ==> 函数也是对象数据类型的
+    //对象数据类型都有一个天生自带的属性__proto__,指向所属类的原型
+
+
+    //因为函数也是对象数据类型的，我们的Function(内置类)是函数数据类型的，所以Function也是对象数据类型的；每一个对象数据类型都有一个天生自带的属性__proto__，
+    //Function是一个内置类，类都是函数数据类型，所有函数数据类型都是Function这个内置类的实例，所以Function作为一个类 一个对象，它的__proto__指向所属类的原型 即Function自身的prototype
+    //Object是一个基类 JS中最顶层的类，类都是函数数据类型，函数也是个对象数据类型，那么Object也有一个天生自带的属性__proto__，因为Object是一个类 是函数数据类型，所以Object.__proto__指向Function的原型prototype
+</script>
+</body>
+</html>

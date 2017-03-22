@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>构造函数-小试牛刀</title>
+</head>
+<body>
+<script>
+    function Student(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    var st1 = new Student('hhh', 18);
+    var st2=new Student('uuu',233);
+    //通过构造函数创建出来的实例都是相互独立的个体，互相不影响，而在构造函数体中写的this.xxx=xxx都相当于在给当前的实例增加属于自己的私有属性
+
+    /*
+    * 类的数据类型：函数数据类型  typeof Student->'function'
+    * 实例的数据类型：对象数据类型  typeof st1->'object'
+    * */
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>考试题第二版</title>
+</head>
+<body>
+<script>
+
+    // 第一题
+
+
+    // 预解释（变量提声）：var num; 默认值undefined -> 全局下有一个叫做num的变量了，在全局下声明的变量相当于给window增加了一个属性num --> window.num=undefined
+
+    console.log(num);// undefined
+    if (!("num" in window)) { // 'num' in window => true
+        var num = 100;
+    }
+    console.log(num);// undefined
+
+
+    // 第2题
+
+    //
+
+    var name = '中国';
+    var age = 5000;
+    age = (function (name, age) { //形参--变量
+        name = '珠峰';
+        age = age || this.age;
+        this.name = arguments[0];//window.name=arguments[0] ==> 全局下的name='珠峰'   【arguments是形参的集合】
+        console.log(name, age);// '珠峰',5000
+    })(name, age);// age=自执行函数返回的结果 函数的返回结果看函数中的return 有return则返回它后面的返回值  没有return则返回undefined  先自执行函数执行完 再给age赋值
+    console.log(name, age);// '珠峰'，undefined
+
+
+    //第3题
+    var obj = {name: "珠峰", age: 7};
+    ~function (obj) {
+        obj.name = "中国";
+        obj = {};
+        obj.age = 5000;
+        console.log(obj);
+    }(obj);// 把全局下obj存储的值赋值给私有变量
+    console.log(obj);
+
+
+    /*
+     var obj={
+     n:12,
+     fn:(function (n) {
+     console.log(n);
+     n++;
+     return function () {
+     console.log(n);
+     }
+     })(obj.n)
+     };
+     obj.fn();//-> Uncaught TypeError: Cannot read property "n" of undefined  在给对象的fn属性赋值的时候，堆内存还没有彻底创建完成，导致并没有把地址赋值给obj，此时的obj和堆内存没有任何的关联，更别说找到里面的n了
+     */
+
+
+
+    //第4题
+    var i = 2;
+    function fn() {
+        i *= 2;
+        return function (n) {
+            console.log(n * (++i));
+        }
+    }
+    var f = fn();
+    f(3);
+    fn()(3);
+    f(4);
+    fn()(4);
+
+
+    //第4题扩展：
+    // 1
+    var i = 2;
+    function fn() {
+        i *= 2;
+        return function (n) {
+            console.log(n * (++i));
+        }
+    }
+    var f = fn();
+    fn()(3);
+    f(3);
+    fn()(4);
+    f(4);
+
+
+    // 2
+    var i = 3;
+    function fn() {
+        i += 2;
+        return function (n) {
+            console.log(n * (i++));//->是否加括号不影响++i和i++的区别,i++即使加括号也是先和别人运算,然后在累加的
+        }
+    }
+    var f = fn();
+    f(3);
+    fn()(3);
+    fn()(4);
+    f(4);
+
+
+    // 3
+    var i = 2;
+    function fn(i) {
+        i *= 2;
+        return function (n) {
+            console.log(n * (++i));
+        }
+    }
+    var f = fn(5);
+    f(3);
+    fn(5)(3);
+    f(4);
+    fn(5)(4);
+
+
+
+    //第5题
+    var num = 1;
+    var obj = {num: 2};
+    obj.fn = (function (num) {
+        this.num = num * 2;
+        num++;
+        return function (n) {
+            this.num += n;
+            num++;
+            console.log(num);
+        }
+    })(obj.num);// 传入2
+    var fn = obj.fn;
+    fn(10);
+    obj.fn(20);
+    console.log(num, obj.num);
+
+
+</script>
+</body>
+</html>
