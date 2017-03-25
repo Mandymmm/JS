@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表格排序</title>
+    <style>
+        #tables{
+            margin:30px auto;
+        }
+        #tables tr th,#tables tr td{
+            width:100px;
+            height:30px;
+            line-height: 30px;
+            text-align: center;
+        }
+        #tables thead{
+            background-color: mediumpurple;
+            cursor: pointer;
+            -webkit-user-select: none;/*点击的时候 禁止文字被选中*/
+        }
+        .c0{
+            background-color: palegoldenrod;
+        }
+        .c1{
+            background-color: palegreen;
+        }
+    </style>
+</head>
+<body>
+<table border="1" cellspacing="0" id="tables"><!--cellspacing 列间距-->
+    <thead>
+    <tr>
+        <th>name</th>
+        <th>age</th>
+        <th>sex</th>
+        <th>score</th>
+    </tr>
+    </thead>
+    <tbody>
+<!--    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>-->
+
+    </tbody>
+</table>
+
+<script src="utils.js"></script>
+<script>
+    var tables=document.getElementById('tables');//获取表格
+    var tBody=tables.tBodies[0];//用表格自己的获取方式 获取tBody
+    var tBodyRows=tBody.rows;//获取tBody里的所有行tr
+    var tHead=tables.tHead;//获取表格的tHead
+    var tHeadRows=tHead.rows[0];//获取tHead里的tr
+    var tHeadThs=tHeadRows.cells;// 获取tHead里的tr的th
+    //1.请求获取数据  ajax
+//    (1)创建ajax对象
+    var xhr=new XMLHttpRequest;
+//    (2)发送请求的接口
+    xhr.open('get','./data.txt',false);
+//    (3)监听请求状态
+    xhr.onreadystatechange=function () {
+        //判断ajax状态--readyState 和 http网络状态码--status
+        if(this.readyState === 4 && this.status === 200){
+            var data=xhr.responseText;
+            console.log(data);//请求得到的数据在responseText属性里 是字符串
+            //将JSON字符串转化为JSON对象 并且考虑兼容问题
+            data='JSON' in window ? JSON.parse(data) : eval('('+data+')');
+            bindData(data);//调用方法 把请求到的数据绑定到页面中
+        }
+    };
+//    (4)发送请求
+    xhr.send();
+
+    //2.绑定数据到页面中(渲染页面)
+    function bindData(data) {
+        var frg=document.createDocumentFragment();//为了避免引发多次回流  创建一个文档碎片 临时的一个元素容器 【同步的时候 要把创建文档碎片放在绑定数据之前 --文件最开始或者绑定数据这个函数里最开始】
+        for(var i=0;i<data.length;i++){ //数组data中有多少项(多少个对象) 就创建多少个tr
+            var cur=data[i];//数组中的每一个对象
+            var tr=document.createElement('tr');
+            for(var key in cur){ //遍历每一个对象中的每一组键值对 有多少组键值对 就遍历多少次 就创建多少个td
+                var val = cur[key];
+                var td=document.createElement('td');
+                if(key === 'sex'){ //处理性别字段：1->男  2->女 如果key是sex 就进行处理
+                    if(val===1){
+                        val ='男';
+                    }else{
+                        val ='女';
+                    }
+                }
+//                td.innerHTML=key === 'sex' ? (cur[key]===1? val='男':val='女'):cur[key];
+                td.innerHTML=val;// 给td添加内容(->对象中每一个属性的属性值)
+                tr.appendChild(td);// 将创建好的td添加到tr里面
+            }
+            frg.appendChild(tr);//将每一次循环创建好的tr 添加到文档碎片(frg)里面 避免多次回流
+        }
+        tBody.appendChild(frg);//最后 一次性将文档碎片里的元素添加到tBody中
+        frg=null;// 用完清空
+        changeBg();// 绑定元素后 隔行变色
+    }
+    //3.给th表头 循环绑定事件
+    var tBodyArr=utils.listToArray(tBodyRows);// 将tBodyRows有类数组转化为数组  再进行sort排序
+    for(var i=0;i<tHeadThs.length;i++){
+        tHeadThs[i].ind=i;// 用自定义属性的方法 保存每一个tHeadThs对应的索引值
+        tHeadThs[i].flag=-1;// flag是排序的标识(点击多次时降序和升序交替) 初始值为-1
+        tHeadThs[i].onclick=function () {
+            // this -> 绑定事件的元素
+            for(var k=0;k<tHeadThs.length;k++){
+                if(tHeadThs[k] !== this){ // 如果不是我点击的这个元素 将排序标识 设为初始值-1
+                    tHeadThs[k].flag=-1;
+                }
+            }
+
+            var that=this;// 将外面this(绑定事件的元素) 保存给变量that
+            this.flag *= -1;
+            //将tBody里的tr根据列里的内容 进行排序
+            tBodyArr.sort(function (a,b) { // a和b是我们tBody的tr
+                // this -> window ---sort的参数中的this
+                var val1=a.cells[that.ind].innerHTML;// cells[i] 当前行的第i列
+                var val2=b.cells[that.ind].innerHTML;// 得到每个tr第i个列的内容 作为排序交换位置的依据
+                if(isNaN(val1) || isNaN(val2)){ // 如果当前点击这一列的内容不是有效数字 说明是中文 就按照中文的方法进行排序
+                    return val1.localeCompare(val2) * that.flag;// localeCompare() 给中文排序
+                }
+                return (val1-val2)*that.flag;
+            });
+            var frgs=document.createDocumentFragment();
+            for(var j=0;j<tBodyArr.length;j++){ // 让页面中的行 按照在数组中给相应元素排好的顺序 依次将对应元素添加到tBody的末尾
+                frgs.appendChild(tBodyArr[j]);
+            }
+            tBody.appendChild(frgs);
+            frgs=null;
+            changeBg();//排序后 依然能实现隔行变色
+        }
+    }
+
+    //隔行变色
+    function changeBg() {
+        for(var i=0;i<tBodyRows.length;i++){
+            tBodyRows[i].className='c'+ i%2;
+        }
+    }
+
+</script>
+</body>
+</html>

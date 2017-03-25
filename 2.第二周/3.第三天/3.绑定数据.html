@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绑定数据</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        #tables{
+            margin:30px auto;
+        }
+        #tables tr th,#tables tr td{
+            width:100px;
+            height:30px;
+            line-height:30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<table border="1" cellspacing="0" id="tables">
+    <thead>
+    <tr>
+        <th>姓名</th>
+        <th>年龄</th>
+    </tr>
+    </thead>
+    <tbody>
+   <!-- <tr>
+        <td>11</td>
+        <td>22</td>
+    </tr>
+    <tr>
+        <td>11</td>
+        <td>22</td>
+    </tr>
+    <tr>
+        <td>11</td>
+        <td>22</td>
+    </tr>-->
+    </tbody>
+</table>
+
+<script>
+    var tables=document.getElementById('tables');
+    var tBody=tables.tBodies[0]; // 用表格的获取方式 得到第一个 tBody
+    //通过ajax把要绑定到页面的数据拿到
+    //获取数据：
+    //  1.创建一个ajax对象
+    var xhr=new XMLHttpRequest;
+    //  2.发送请求的请求方式 请求地址 是否异步
+    xhr.open('get','./data.txt',true);
+    //  3.监听请求
+    xhr.onreadystatechange=function () {
+        //如果ajax状态为4  http状态为200(2开头的三位数) 说明请求成功
+        if(this.readyState === 4 && this.status === 200){
+            var data=xhr.responseText;
+            console.log(data);//请求成功后得到的数据 在responseText里面 得到的是字符串 需要转换成JSON对象
+            data = 'JSON' in window ? JSON.parse(data) : eval('('+data+')');
+            bindData(data);// 绑定数据  调用方法
+        }
+    }
+    //  3.发送请求
+    xhr.send();
+    //  4.绑定数据 --- 创建一个方法
+    /* // 字符串拼接的方式：
+    function bindData(data) {
+//        console.log(data);
+        var str='';
+        for(var i=0;i<data.length;i++){
+            var cur=data[i];
+            str +='<tr>';
+            for(var key in cur){
+                str+='<td>'+cur+'</td>';
+            }
+            str +='</tr>';
+        }
+//        console.log(str);
+        tBody.innerText=str;
+    }
+    */
+
+    // 动态创建的方式：
+    function bindData(data) {
+        for(var i=0;i<data.length;i++){ //数据中有多少项 就创建多少个tr
+            var cur=data[i];
+            var tr=document.createElement('tr');
+            for(var key in cur){ // 每一条数据有多少键值对  就创建多少个td
+                var td = document.createElement('td');
+                td.innerHTML=cur[key];
+                tr.appendChild(td); // 把每一次创建后的td都添加到对应的tr里面
+            }
+            tBody.appendChild(tr); // 再把每一次创建的tr添加到容器末尾
+        }
+    }
+
+
+    //字符串拼接和动态创建
+
+//    DOM回流：页面中的html结构发生改变(增加、删除、位置改变)，浏览器就会重新计算一次DOM结构 --> 多次操作DOM就会引起多次回流，耗费性能
+     // --> 动态创建 多次操作DOM(appendChild等)会产生多次回流，比较耗费性能
+    // -->  字符串拼接 是把所有拼接好的最终一次性输出到页面，只会引发一次回流
+
+//    重绘：页面中部分样式发生了改变(背景颜色、字体颜色等样式)，浏览器只会把这个发生改变的元素重新渲染
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

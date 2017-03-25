@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>call方法2</title>
+</head>
+<body>
+<script>
+    //    'use strict'; // “严格模式” ：让 JavaScript 在更加严格的方式下运行  一定要写在文件的第一行 才起作用
+    // call的作用：就是改变方法中的this关键字
+    // 非严格模式下, 如果call中的第一个参数不传或者传的是null/undefined，方法中的this都是window ,其余的call中第一个参数是谁this就是谁
+    // 在严格模式下， 如果call中的第一个参数不传就是undefined， 其余的call中第一个参数是谁this就是谁， 如果是null就是null、如果是undefined就是undefined
+
+    /*
+
+     var ary=[1,2,3];
+     function fn() {
+     console.log(this);
+     }
+     fn.call();// 非严格模式下 ==>执行输出的this是window //  严格模式下 ==>执行输出的this是undefined
+     fn.call(null);// 非严格模式下 ==>执行输出的this是window //  严格模式下 ==>执行输出的this是null
+     fn.call(undefined);// 非严格模式下 ==>执行输出的this是window //  严格模式下 ==>执行输出的this是undefined
+     fn.call(ary);// 两种模式下， 执行输出的都是数组[1,2,3]
+     */
+
+
+
+    //    call的作用：改变call“.”前面方法中的this 并让前面的方法执行
+    var obj = {name: 'zhufeng'};
+    var name = 'beijing';
+    function fn(a, b) {
+        console.log(this.name);
+        console.log(this);
+        console.log(a, b);
+    }
+    fn();
+    //执行输出 beijing   Window   undefined undefined
+    fn.call(obj);
+    //执行输出 zhufeng   Object {name: "zhufeng"}   undefined undefined
+    fn.call(100, 200);// this是Number 里面属性对应的属性值是100 ，把200当做第一个实参传递给fn中的第一个形参 第二个实参没有传就是undefined
+    //执行输出 undefined   Number {[[PrimitiveValue]]: 100}   200 undefined
+    fn.call(null, 100, 200);
+    //执行输出 beijing   Window   100 200
+</script>
+</body>
+</html>

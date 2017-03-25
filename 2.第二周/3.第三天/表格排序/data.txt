@@ -1,0 +1,8 @@
+[
+{"name":"胡歌","age":33,"sex":1,"score":99},
+{"name":"陈奕迅","age":39,"sex":1,"score":88},
+{"name":"王菲","age":18,"sex":2,"score":93},
+{"name":"唐嫣","age":18,"sex":2,"score":89},
+{"name":"孙燕姿","age":22,"sex":2,"score":83},
+{"name":"罗晋","age":32,"sex":1,"score":90}
+]

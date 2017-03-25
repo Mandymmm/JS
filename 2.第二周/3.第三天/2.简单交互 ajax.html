@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简单交互</title>
+</head>
+<body>
+<script>
+    //ajax：异步请求  局部刷新
+//    XMLHttpRequest 是window的一个对象 一个方法  一个类 可以直接用
+    var xhr = new XMLHttpRequest;//生成一个XMLHttpRequest的实例  在这个实例里面提供了我们 发送请求和接收数据的 属性和方法
+    console.log(xhr);
+
+//    1.要发送的请求
+    /*
+     xhr.open(@param1,@param2,@param3);
+    * 第一个参数：获取方式（请求方式） ： get  post ...
+    * 第二个参数：请求地址（获取的路径） ： './url' --文件名一定要一样 比如 没有.txt就不要写
+    * 第三个参数：true : 异步 (默认为异步) 不管请求是否成功(不管请求里的代码是否执行)，后面的代码都会执行
+    *           false : 同步  等到请求成功之后 后面的代码再执行
+    * */
+
+    xhr.open('get','./data.txt',true);//'get'--获取的方式(请求方式)  './url'--获取的路径(请求地址)
+
+//    2.监听请求响应（还需要判断是否成功  是否拿到数据）
+    xhr.onreadystatechange=function () { //监听请求  等待后台的响应
+        //实例xhr的属性readyState：是ajax请求的状态码 有五个状态码 分别为 0 1 2 3 4 ；0 -- 初始的时候， 4 -- 请求已经成功到达(成功完成发送请求)
+        //实例xhr的属性states ：http请求的状态码   如果http请求成功--状态码基本是200 一些2开头的三位数也代表成功； 通常访问一个不存在的网页 返回的http状态码为404
+        //两个状态码都成功了  才说明请求是完全成功了
+        //后台响应的数据会放在responseText属性里
+        if(this.readyState === 4 && this.status === 200){
+            console.log(this.responseText);
+            console.log(typeof this.responseText);//字符串
+        }
+    };
+//     3.发送  (上面两步相当于是请求的准备阶段 然后开始发送)
+    xhr.send();//发送
+
+
+
+
+
+    var xhr1=new XMLHttpRequest;
+    xhr1.open('get','./data.txt',true);
+    xhr1.onreadystatechange=function () {
+        if(this.readyState === 4 && this.status === 200){
+            console.log(this.responseText);
+        }
+    };
+    xhr1.send();
+    console.log(123);
+
+</script>
+</body>
+</html>

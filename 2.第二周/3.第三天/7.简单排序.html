@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简单排序</title>
+</head>
+<body>
+<ul>
+    <li>33</li>
+    <li>11</li>
+    <li>66</li>
+    <li>55</li>
+    <li>44</li>
+</ul>
+<script src="utils--将类数组转换为数组.js"></script>
+<script>
+    //给li排序
+    var uls=document.getElementsByTagName('ul')[0];
+    var lis = document.getElementsByTagName('li');
+    var lisArr=utils.listToArray(lis);
+    console.log(lisArr);
+    /*
+    * sort中
+    * a 当前项是li
+    * b 当前项的后一项也是li
+    *
+    *
+    * */
+    lisArr.sort(function (a,b) { //sort排列数组中每一项
+        return a.innerHTML-b.innerHTML; //return 后面返回值只需要是一个数字
+//        根据运算结果来决定是否交换位置
+//        return 的  如果大于0  就a和b交换位置
+//        return 的  如果<=0  a和b就不交换
+    });
+    console.log(lisArr);
+    var frg=document.createDocumentFragment();//文档碎片
+    for(var i=0;i<lisArr.length;i++){
+        var cur=lisArr[i];
+//        debugger;//打断点  代码执行的这一行停顿 在浏览器手动点击下一步的时候 再执行下一行  调bug常用
+        frg.appendChild(cur);//先把每一次创建的元素 添加到文档碎片中
+    }
+    uls.appendChild(frg);// 然后再把文档碎片中的元素 一次性都添加到页面ul中 只引发一次回流
+    frg=null;//用完清空
+</script>
+</body>
+</html>

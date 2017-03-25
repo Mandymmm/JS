@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>将类数组转换为数组</title>
+</head>
+<body>
+<script>
+ /*
+    // 将类数组转换为数组: arguments 类数组
+
+    function Fn() {
+        var ary = [];
+        for (var i = 0; i < arguments.length; i++) {
+            ary.push(arguments[i]);
+        }
+    }
+
+    // 优化上述代码：--> 借用数组原型上的slice方法，当slice执行的时候，让方法中的this变为我们要处理的arguments，实现将类数组arguments转换为数组
+
+    function Fn() {
+        var ary = Array.prototype.slice.call(arguments);
+        //   或者是 var ary=[].slice.call(arguments);// 通过一个空数组利用原型链找到Array原型上的slice方法
+    }
+
+*/
+    var ary = [12, 23, 13];
+    ary.slice();// 克隆一份和原数组一样的 以新数组返回
+    //    ==>在原型链上扩展一个mySlice方法 模拟内置的slice实现数组克隆的这个功能
+    Array.prototype.mySlice = function () {
+        //里面的this->当前要操作的这个数组ary
+        var ary1 = [];
+        for (var i = 0; i < this.length; i++) {
+            ary1.push(this[i]);
+        }
+        return ary1;
+    };
+    var ary = [12, 23, 13];
+    var newAry = ary.mySlice();
+    console.log(newAry);
+</script>
+</body>
+</html>

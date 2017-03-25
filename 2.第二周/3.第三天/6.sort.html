@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sort</title>
+</head>
+<body>
+<button>排序</button>
+<p></p>
+<script>
+    var arr=[8,2,5,3];
+    /*
+    * a 是当前项
+    * b 是当前项的后一项
+    * 如果当前项大于后一项 交换位置
+    * */
+    arr.sort(function (a,b) {
+        return a-b;// return 返回的是 a-b的运算结果 三种可能: >0 / =0 / <0 只要运算结果>0就交换位置
+//        return 1;// 如果始终返回一个大于0的数，当前项和后一项始终都要交换下位置  最终等于将原有的倒过来排列； 如果返回的是<=0的不进行交换
+//        return 0;// 都不交换位置
+//        return -1;// 都不交换位置
+    });
+    console.log(arr);
+
+
+    arr.sort(function (a,b) {
+//        return b-a;//从大到小排序
+        return (a-b)*-1
+    });
+    console.log(arr);
+
+
+    //实现：点击按钮 切换是从小到大排序还是从大到小排序
+    var test=document.getElementsByTagName('p');
+    var arr=[1,5,3,23,12];
+    var flag=1;//flag是排序的标识
+    function fn() {
+        flag*= -1;//每一次点击时 如果flag是1就会变成-1； 如果flag是-1就会变成 1
+        arr.sort(function (a,b) {
+            return (a-b)*flag;// flag是1时，是return a-b -->从小到大排序； flag是-1时，是return b-a -->从大到小排序
+        });
+        test.innerHTML=arr.toString();//只是为了让排序后的数组变成字符串并且在页面里显示
+    }
+
+
+</script>
+</body>
+</html>

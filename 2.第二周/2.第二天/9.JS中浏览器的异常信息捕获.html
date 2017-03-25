@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>捕获异常</title>
+</head>
+<body>
+<script>
+    // try、catch 是js中比较常用的捕获异常方法
+
+    /*
+    * try  catch  finally
+    * 如果try里面的代码报错就会执行catch里面的代码
+    * catch(e)  e.message 报错信息
+    * finally 不管上面报不报错都会执行
+    *
+    * try{
+
+     }catch (e) {
+
+     }finally
+    * */
+
+/*
+
+    try{
+        //JS代码
+    }catch (e){
+        //如果try中代码报错 则执行catch中的代码
+    }finally {
+        //一般不用 ：不管try中的代码是否报错，都要执行finally中的代码
+    }
+*/
+
+
+/*
+    console.log(num);// 报错：num is not defined  JS中本行报错，如果不处理下面的代码都不再执行了
+    console.log('ok');
+    */
+
+/*
+
+//  如果用try\catch捕获了异常信息，不影响下面的代码继续执行
+
+    try{
+        console.log(num);
+    }catch (e) { // 形参必须要写，一般起名为e
+
+    }
+    console.log('ok');//输出'ok'
+*/
+
+/*
+
+//  如果try中的代码执行出错了，会默认的去执行catch中的代码
+
+    try{
+        console.log(num);
+    }catch (e) { // 形参必须要写，一般起名为e
+        console.log(e.message);// num is not defined  -> e.message 可以收集当前代码报错的原因
+    }
+    console.log('ok'); //输出'ok'
+*/
+
+
+    //有时候既想捕获到错误的信息，又不想让下面的代码继续执行（上面的代码和下面代码有关联，上面的错误不执行下面也没有执行的必要）
+//    ==> 在浏览器中手动抛出一条错误信息，终止代码执行
+    try{
+        console.log(num);
+    }catch (e) {
+        console.log(e.message);//可以得到错误的信息，把其进行统计
+        throw  new Error('当前网络繁忙，请稍后再试');//手动抛出一条错误信息，终止代码执行
+    }
+    console.log('ok'); //输出'ok'
+//    new Error是Error类的一个实例 ，Error又可以细分为几个小类：
+    // new ReferenceError -> 引用错误
+    // new TypeError -> 类型错误
+    // new RangeError -> 范围错误
+
+
+
+</script>
+</body>
+</html>

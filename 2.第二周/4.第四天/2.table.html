@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>table</title>
+    <link rel="stylesheet" href="css/reset.min.css">
+    <link rel="stylesheet" href="css/table.css">
+</head>
+<body>
+<!--
+    a(Anchor)是超链接标签，它有自己的行为：跳转页面、锚点定位 --- 如果只想把它做成一个按钮，我们需要阻止默认行为 => <a href="javascript:;"></a>
+-->
+
+
+<div class="control clear" id="control"><!--clear 清浮动-->
+    <span>排序：</span>
+    <a href="javascript:;">上架时间<i class="up"></i><i class="down"></i></a>
+    <a href="javascript:;">价格<i class="up"></i><i class="down"></i></a>
+    <a href="javascript:;">热度<i class="up"></i><i class="down"></i></a>
+</div>
+<!--ul.product>li>a>img+span.title+span.price-->
+<div class="product" id="product">
+    <ul class="clear">
+        <li><a href="#">
+            <img src="img/1.jpg" alt="">
+            <span class="title">华为运动蓝牙耳机</span>
+            <span class="price">￥499</span>
+        </a></li>
+    </ul>
+</div>
+
+
+<script src="js/utils.js"></script>
+<script src="js/table.js">
+    /*
+    * Array.prototype.sort
+    * Array.prototype.slice.call(arguments)
+    *
+    * */
+</script>
+</body>
+</html>

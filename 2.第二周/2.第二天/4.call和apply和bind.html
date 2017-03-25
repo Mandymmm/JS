@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>call apply bind</title>
+</head>
+<body>
+<script>
+    //call 改变方法中的this关键字
+//        作用：将call“.”前面方法中的this修改为call中第一个参数值，并将call“.”前面的方法执行
+/*
+    var arr1=[1,2,3];
+    var arr2=[3,4,5];
+    function fn(a,b) {
+        console.log(this);
+        console.log(a,b);
+    }
+    fn.call(arr1,100,200);
+
+    //apply  修改方法中的this关键字
+//        作用：将apply“.”前面方法中的this修改为apply中的第一个参数值， 并让apply“.”前面的方法执行
+
+    fn.apply(arr2,[100,200]);// apply方法在传参数的时候需要将实参放在一个数组里面
+
+    */
+    //call和apply的区别：
+//       首先call和apply都是改变方法中this关键字
+//       区别：call传参的时候是从call方法的第二个参数开始一个一个的进行传递
+//            apply 把需要传递的参数值放在一个数组里，也相当于通过数组把参数一个一个传递进去
+
+
+/*
+    //bind 修改方法中的this关键字  但是在ie低版本浏览器存在兼容性问题
+//      与call的区别是：修改以后不会自己默认执行“.”前面的方法，而是需要用的时候再用命令让它执行
+
+    var arr1=[1,2,3];
+    var arr2=[3,4,5];
+    function fn(a,b) {
+        console.log(this);
+        console.log(a,b);
+    }
+//    fn.bind(arr1);// 直接执行此语句，bind“.”前面的方法没有默认执行 用的时候再执行
+
+    var fe=fn.bind(arr1,100,200);// 预处理：先将fn中的this修改为arr1， 但并不会让fn执行，而是将改造后的fn当做返回值返回给fe ，即 fe接收的是this被改造后的fn
+    fe();// 改造后的fn执行
+
+    */
+
+    //call和apply第一个参数指定谁 方法中的this就是谁
+    //
+
+    function fn1() {
+        console.log('fn1');
+        console.log(this);
+    }
+    function fn2() {
+        console.log('fn2');
+        console.log(this);
+    }
+    fn1.call(fn2);// 让fn1执行并将函数里面的this修改为fn2
+//    fn1.call.call.call();//因为call本身就是一个函数方法，所以也可以根据原型链找到Function原型上的call方法并使用
+
+
+
+    fn1.call.call(fn2);// 先执行最后一个call -> 让fn1.call执行 并将里面的this改为fn2  而fn1.call()里面的this是fn1 现在把this改为fn2 则相当于fn1.call()==>fn2.call() ; 然后就剩下一个call方法了，再看fn2.call() --> 让call“.”前面的fn2执行(输出'fn2')，没有传参，fn2里的this仍然是window
+    fn1.call.call.call.call.call(fn2);// 倒数第二个call之后 this就没有被改变 所以仍然相当于fn1.call.call(fn2);
+
+//    规律：
+//        两个call以上最终执行的是 最后一个call中的第一个参数 并且里面的this是window
+
+</script>
+</body>
+</html>

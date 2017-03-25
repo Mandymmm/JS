@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>字符串拼接和动态创建</title>
+</head>
+<body>
+<ul>
+    <li>22</li>
+    <li>33</li>
+    <li>11</li>
+</ul>
+<script>
+    var uls=document.getElementsByTagName('ul')[0];
+    var lis=document.getElementsByTagName('li');
+    console.log(lis);// 元素集合长度为3
+
+
+    var arr=[];
+    for(var j=0;j<lis.length;j++){
+        arr.push(lis[j]);
+    }
+
+    //动态添加
+//    文档碎片： 动态创建的一个容器  通常用来避免多次回流
+    var frg=document.createDocumentFragment();
+
+
+    for(var i=0;i<5;i++){
+        var list=document.createElement('li');
+        list.innerHTML=666;
+        frg.appendChild(list);//每次把添加的内容都添加到文档碎片里
+    }
+    uls.appendChild(frg);// 最终一次性把文档碎片里的全部内容添加到原有元素里
+    frg=null;// 将文档碎片清空
+
+
+    for(var j=0;j<lis.length;j++){
+        lis[j].onmouseover=function () {
+            this.style.backgroundColor='red';
+        };
+        lis[j].onmouseout=function () {
+            this.style.backgroundColor='';
+        }
+    }//把绑定的事件(移入移出及样式)放在动态添加元素之后，新添加的元素也会有和原有内容相同的效果
+
+
+    console.log(lis);//元素集合长度为8
+
+    //==> HTMLCollection/NodeList：元素集合/节点集合  即时更新 ---> 如果所属的内部结构发生了改变，它会自动同步更新
+
+    console.log(arr);//输出的数组长度仍然为3
+
+    //==> 给数组添加同样的项 并不会即时更新
+
+
+
+/*
+    //字符串拼接添加
+    var str='';
+    for (var i=0;i<5;i++){
+        str+='<li>111</li>';
+    }
+    uls.innerHTML+=str;//相当于 uls.innerHTML=uls.innerHTML+str;   原有的事件和效果失败
+    */
+
+
+
+    //字符串拼接：
+//    优势：只会引发一次回流
+//    弊端：当我们在向原有的里面拼接添加的时候，相当于先把原有的当做字符串获取到  然后再和新生成的拼接成字符串 再输出，这样浏览器会重新渲染和解析，从而导致原有的事件和效果失效
+    //动态添加：
+//    优势：不会影响原有的 事件和效果 (但是新添加的没有相应事件和效果 --> 把事件和效果放在添加元素代码的后面就可以使新添加的也有相应的事件和效果)
+//    弊端：引发多次回流 ---> 这就用到了 文档碎片(动态创建容器)
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

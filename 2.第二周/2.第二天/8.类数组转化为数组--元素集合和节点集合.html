@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>将类数组转换为数组</title>
+</head>
+<body>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+
+<script>
+    /*
+     var oLis=document.getElementsByTagName('div');
+     console.dir(oLis);// 得到的是HTMLCollection元素集合类的一个实例 --> 类数组集合
+     oLis=document.getElementsByName('huge');
+     console.dir(oLis);// NodeList节点集合的一个实例 --> 类数组集合
+     */
+
+    /*
+
+     //    把元素集合的类数组转换为数组
+     var oLis = document.getElementsByTagName('div');
+
+     //标准浏览器中用这种方法转换：
+     var ary=Array.prototype.slice.call(oLis);
+     console.log(ary);
+
+     //非标准浏览器中用for循环实现：
+     for(var i=0;i<oLis.length;i++){
+     ary.push(oLis[i]);
+     }
+     */
+
+
+
+
+    //    -> 在ie6-8浏览器中，不支持借用数组的slice方法来实现将元素集合的类数组转换为数组 --> 用的话会报错
+    // 【元素集合和节点集合都不兼容，但是arguments借用数组的方法是不存在任何兼容问题的】
+</script>
+</body>
+</html>

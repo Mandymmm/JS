@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DOM映射</title>
+</head>
+<body>
+<ul>
+    <li>222</li>
+</ul>
+<script>
+
+    //DOM映射： html页面中的元素 和　JS中通过DOM方法获取的元素对象 是绑定在一起的  --- 对应的一个改变另一个也会改变
+
+    var uls=document.getElementsByTagName('ul')[0];
+    var lis=document.getElementsByTagName('li');
+    lis[0].style.backgroundColor='red';
+    console.log(lis);
+
+    for(var i=0;i<3;i++){
+        var list=document.createElement('li');
+        uls.appendChild(list);// appendChild的是新添加的则添加到末尾，如果appendChild的是文档中已有的则把它移动到末尾(所有之后)
+    }
+    console.log(lis);
+    //HTMLCollection：元素集合 即时更新  如果内部结构发生改变 会更新同步到元素集合中
+
+
+    var uls=document.getElementsByTagName('ul')[0];
+    var lis=document.getElementsByTagName('li');
+    lis[1].style.backgroundColor='red';
+    setTimeout(function () {
+        uls.appendChild(lis[1]);//本身页面中已有的 再appendChild 相当于 将元素移动到容器末尾
+        var list=document.createElement('li');
+        list.innerHTML='hello';
+        uls.appendChild(list);//appendChild新添加的元素 则就是添加到容器末尾
+    })
+
+
+</script>
+</body>
+</html>

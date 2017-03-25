@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>获取平均分</title>
+</head>
+<body>
+<script>
+    //一堆数 去掉最高分 去掉最低分 求平均分
+//思想一：先排序，去掉最大的和最小的 再求平均数 【arguments是一个类数组集合，不是一个数组，不能直接使用数组方法】
+//    -->1. 将类数组转换为数组
+//       2.给数组排序，去掉开头和结尾，剩下的数求平均数
+/*
+
+    function average() {
+//        arguments.sort();// 报错 因为arguments是一个类数组集合，不是一个数组，不能直接使用数组方法sort()
+        var ary=[];
+        for (var i=0;i<arguments.length;i++){
+            ary.push(arguments[i]);
+        }
+
+        ary.sort(function (a,b) {
+            return a-b;
+        })
+        ary.shift();
+        ary.pop();
+        return (eval(ary.join('+'))/ary.length).toFixed(2);// (一个数).toFixed(n) 保留小数点后面n位
+    }
+    var res=average(9.8,6.3,8.8,9,10,7,6);
+    console.log(res);
+*/
+
+// 优化上述代码：
+    function average() {
+        var ary=[];
+
+        /*for (var i=0;i<arguments.length;i++){
+            ary.push(arguments[i]);
+        }//把arguments转化为数组*/
+//  --> 借用数组原型上的slice方法，当slice执行的时候，让方法中的this变为我们要处理的arguments，实现将类数组arguments转换为数组
+        var ary=Array.prototype.slice.call(arguments);
+//   或者是 var ary=[].slice.call(arguments);// 通过一个空数组利用原型链找到Array原型上的slice方法
+        ary.sort(function (a,b) {
+            return a-b;
+        })
+        ary.shift();
+        ary.pop();
+        return (eval(ary.join('+'))/ary.length).toFixed(2);// (一个数).toFixed(n) 保留小数点后面n位
+    }
+    var res=average(9.8,6.3,8.8,9,10,7,6);
+    console.log(res);
+
+
+/*
+
+    var ary=[12,23,13];
+    ary.slice();// 克隆一份和原数组一样的 以新数组返回
+//    ==>在原型链上扩展一个mySlice方法 模拟内置的slice实现数组克隆的这个功能
+    Array.prototype.mySlice=function () {
+        //里面的this->当前要操作的这个数组ary
+        var ary1=[];
+        for(var i=0;i<this.length;i++){
+            ary1.push(this[i]);
+        }
+        return ary1;
+    };
+    var ary=[12,23,13];
+    var newAry=ary.mySlice();
+    console.log(newAry);
+*/
+
+
+//思想二：不将类数组转化为数组，直接给arguments排序-->利用call改变数组原型上内置类的方法中的this的功能 ，来借用数组原型上的sort方法，实现将arguments进行排序  并且后面所有需要用到数组方法的时候都同样借用
+    function average() {
+        Array.prototype.sort.call(arguments,function(a,b){
+            return a-b
+        });
+        [].shift.call(arguments);
+        [].pop.call(arguments);
+        return (eval([].join.call(arguments,'+'))/arguments.length).toFixed(2);// (一个数).toFixed(n) 保留小数点后面n位
+    }
+    var res=average(9.8,6.3,8.8,9,10,7,6);
+    console.log(res);
+
+</script>
+</body>
+</html>

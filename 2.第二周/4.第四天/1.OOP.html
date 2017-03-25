@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OOP-面向对象</title>
+</head>
+<body>
+<script>
+    function fn1() {
+        console.log(1);
+    }
+    function fn2() {
+        console.log(2);
+    }
+
+
+    Function.prototype.call(fn1);//Function的原型是一个匿名函数 所以不会报错 里面没有内容 所以执行没有输出
+    Function.prototype.call.call.call(fn1);//-> 1
+
+
+/*
+
+    function Fn(name) {
+        var age = 30;
+        this.name = name;
+        this.age = age;
+        this.say = function () {
+            console.log('my name is ' + this.name + '，i can say!');
+        }
+    }
+    Fn.prototype.age = 40;
+    Fn.prototype = {
+        say: function () {
+            console.log('my name is ' + this.name + '，i can say!');
+        },
+        eat: function () {
+            console.log('my age is ' + this.age + '，i can eat!');
+        }
+    };
+    Fn.say = function () {
+        console.log('my name is ' + this.name + '，i can say!');
+    };
+
+    var f1 = new Fn('wang');
+    var f2 = new Fn('li');
+    console.log(f1.say === f2.say);//false f1.name='wang'  f2.name='li'
+    console.log(Fn.prototype.say === f2.say);//false  Fn.prototype.name=undefined
+    console.log(Fn.prototype.say === f2.__proto__.say);//true f2.__proto__=Fn.prototype
+    console.log(f1.eat === f2.eat);//true  f1.age=f2.age=30
+    console.log(Fn.prototype.eat === f2.eat);//false  Fn.prototype.age=undefined
+
+    f1.say();// my name is wang，i can say!
+    f2.__proto__.say();// my name is undefined，i can say!
+    Fn.say();// this是Fn -> Fn有私有属性name:'Fn'  每一个函数都有name这个私有属性
+    f1.eat();// this.age=f1.age=30
+    f1.__proto__.eat();// my age is undefined，i can eat!   f1.__proto__.age=Fn.prototype=undefined
+    Fn.prototype.eat();// my age is undefined，i can eat!
+    Fn.eat();// Fn.eat->undefined(私有属性没有 向上级原型找也没有) 报错：Uncaught TypeError: Fn.eat is not a function
+*/
+
+</script>
+</body>
+</html>

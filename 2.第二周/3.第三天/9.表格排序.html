@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表格排序</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        #tables{
+            margin:30px auto;
+        }
+        #tables thead{
+            background-color: palegreen;
+        }
+        #tables tr th, #tables tr td {
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<table border="1" cellspacing="0" id="tables">
+    <thead>
+    <tr>
+        <th>name</th>
+        <th>age</th>
+        <th>sex</th>
+        <th>score</th>
+    </tr>
+    </thead>
+    <tbody>
+<!--    <tr>
+        <td>11</td>
+        <td>33</td>
+        <td>22</td>
+        <td>haha</td>
+    </tr>
+    <tr>
+        <td>11</td>
+        <td>33</td>
+        <td>22</td>
+        <td>haha</td>
+    </tr>
+    <tr>
+        <td>11</td>
+        <td>33</td>
+        <td>22</td>
+        <td>haha</td>
+    </tr>-->
+    </tbody>
+</table>
+
+<script>
+    var tables=document.getElementById('tables');
+    var tBody=tables.tBodies[0];
+    //获取数据
+    var xhr=new XMLHttpRequest;
+    xhr.open('get','./dataB.txt',true);
+    xhr.onreadystatechange=function () {
+        if(this.readyState===4&&this.status===200){
+//            console.log(xhr.responseText);
+            var data= xhr.responseText;
+            data = "JSON" in window ? JSON.parse(data) : eval('('+data+')');
+//            console.log(data);
+            bindData(data);// 调用方法  实现绑定数据
+        }
+    }
+    //绑定数据
+    function bindData(data) {
+        for(var i=0;i<data.length;i++){
+            var cur=data[i];
+            var tr=document.createElement('tr');
+            for(var key in cur){
+                var td=document.createElement('td');
+                td.innerHTML=cur[key];
+                tr.appendChild(td);
+            }
+        }
+    }
+</script>
+</body>
+</html>
