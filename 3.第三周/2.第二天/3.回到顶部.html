@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>回到顶部</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        .back{
+            position: fixed;
+            width:60px;
+            height:60px;
+            border:1px solid orange;
+            background-color: palegreen;
+            right:50px;
+            bottom:100px;
+            line-height: 60px;
+            text-align: center;
+            cursor: pointer;
+            font-size:14px;
+            -webkit-user-select: none;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+<div><img src="taobao.jpg" alt=""></div>
+<div><img src="taobao.jpg" alt=""></div>
+<div><img src="taobao.jpg" alt=""></div>
+<div><img src="taobao.jpg" alt=""></div>
+<div><img src="taobao.jpg" alt=""></div>
+<div><img src="taobao.jpg" alt=""></div>
+<div><img src="taobao.jpg" alt=""></div>
+<div class="back" id="back">回到顶部</div>
+
+<script src="../../../utils.js"></script>
+<script>
+    //让scrollTop滚动超过一屏 再显示回到顶部
+    //->获取浏览器一屏高度 clientHeight
+    //->点击back的时候  scrollTop 为 0
+    //-> 添加实时监听滚动条事件 onscroll
+
+    var winH=utils.win('clientHeight'); // 获取浏览器的一屏的高度
+    var back=document.getElementById('back');
+    console.log(winH);
+    window.onscroll=function () {
+        var sTop=utils.win('scrollTop');// 实时获取此时滚动条的scrollTop  只要滚动滚动条就要获取scrollTop值
+        console.log(sTop);
+        if(sTop >= winH) { // 如果滚动的超过一屏 就让回到顶部按钮显示
+            utils.setCss(back,'display','block');
+        }else{ // 否则隐藏
+            utils.setCss(back,'display','none');
+        }
+    };
+    var timer;
+    back.onclick=function () {
+        timer=setInterval(function () {
+            var sTop=utils.win('scrollTop');// 每隔一段时间获取此时的scrollTop
+            if(sTop<=0){ // 如果scrollTop 小于等于0  说明已经在顶部 不需要再递减
+                clearInterval(timer);
+                return;
+            }
+            sTop-=100; // 每隔一段时间 让此时的sTop的值递减
+            utils.win('scrollTop',sTop); //然后将递减的值 设置回去
+        },10)
+    };
+    // 监听滚轮事件 防止在回到顶部过程中用户滚动滚轮产生的问题
+    window.onmousewheel = function () {
+        clearInterval(timer);
+    }
+
+    //解决 滚动条滚动一段以后 再次刷新页面 滚动条仍然在上次位置的问题 即刷新以后 页面重新加载 滚动条默认在顶部
+    setTimeout(function () {
+        utils.win('scrollTop', 0);
+
+    },5);
+
+</script>
+</body>
+</html>

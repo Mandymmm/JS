@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Object.create</title>
+</head>
+<body>
+<script>
+    // Object.create  返回一个新对象obj2  让obj2.__proto__=obj1
+
+    var obj1={name:'zhufeng'};
+    var obj2=Object.create(obj1);
+    console.log(obj2.name);// zhufeng
+    console.log(obj2.__proto__===obj1);// true
+    console.log(obj2);
+
+    // Object.create 在IE8以下不支持 --> 自己写解决兼容问题
+
+    // 返回一个新对象  让这个新对象的__proto__指向 传进来的obj
+    function objectCreate(obj) {
+        function Fn() {};
+        Fn.prototype=obj;
+        return new Fn();// new Fn 这个实例的__proto__=Fn.prototype = obj
+    }
+
+    var obj3=objectCreate(obj1);// obj3就是方法中的Fn的实例  Fn的原型指向传进来的obj1
+    console.log(obj3.name);// zhufeng
+
+</script>
+</body>
+</html>

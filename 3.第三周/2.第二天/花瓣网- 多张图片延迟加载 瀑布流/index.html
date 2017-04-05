@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>花瓣-多张图片延迟加载 瀑布流</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        ul {
+            list-style: none;
+        }
+        a {
+            text-decoration: none;
+
+        }
+        .container ul li a {
+            display: none;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            color: #fff;
+            width: 60px;
+            height: 25px;
+            text-align: center;
+            line-height: 25px;
+            background-color: #ffa09e;
+        }
+        .container ul li a:hover {
+            background-color: red;
+        }
+        .container ul {
+            float: left;
+            width: 200px;
+            margin-right: 10px;
+        }
+        .container ul li {
+            position: relative;
+            width: 100%;
+            border: 1px solid #666;
+            box-shadow: 0 0 0 #ccc;
+            margin-top: 10px;
+            background-color: #fff;
+        }
+        .container ul li:hover a{
+            display: block;
+        }
+        .container ul li img{
+            width: 100%;
+            background: url("./images/jiazai.gif") no-repeat center;
+            opacity: 0.3;
+            filter: alpha(opacity= 30);
+        }
+        .container {
+            width: 840px;
+            margin: auto;
+            padding: 0 0 10px 10px;
+            overflow: hidden;
+            zoom: 1;
+            background-color: #F4F4F0;
+        }
+        .container ul li p {
+            padding-left: 10px;
+            color: #999;
+            font-size: 14px;
+            height: 30px;
+            line-height: 30px;
+
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="container">
+    <ul>
+<!--        <li>
+            <a href="javascript:;">采集</a>
+            <img src="images/8.jpg" alt="">
+            <p>人生不止有代码 </p>
+        </li>-->
+    </ul>
+    <ul>
+
+    </ul>
+    <ul>
+
+    </ul>
+    <ul>
+
+    </ul>
+</div>
+
+<script src="utils.js"></script>
+<script src="index.js"></script>
+</body>
+</html>

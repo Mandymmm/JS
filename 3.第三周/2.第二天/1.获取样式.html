@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>获取样式</title>
+    <style>
+        #oDiv{
+            height: 200px;
+        }
+    </style>
+
+</head>
+<body>
+<div id="oDiv" style="width: 200px;height: 400px"></div>
+
+<script>
+    var oDiv=document.getElementById('oDiv');
+    console.log(oDiv.style.width);
+    console.log(oDiv.style.height);
+    // 元素.style  只能获取到 元素的行内样式
+
+
+    //window.getComputedStyle  通过它可以获取所有经过浏览器计算过的元素样式属性和属性值（元素在浏览器加载的时候渲染出来 展现在页面中的样式）
+    // window.getComputedStyle(元素,伪类->不常用 一般写null占位) 得到一个对象数据类型 (是CSSStyleDeclaration 这个类的一个实例  css属性集合)
+
+    var cssObj=window.getComputedStyle(oDiv,null);
+    console.log(cssObj.height);
+    //这个方法在ie8以下不兼容 --> 有ie自己提供的 currentStyle 属性  ， 在ie以外的浏览器不支持 ==> 需要封装函数来实现获取样式
+    //--> 元素.currentStyle[attr];
+    console.log(oDiv.currentStyle.height);// 也可以得到通过浏览器计算过的样式
+
+
+
+
+
+    // 解决getComputedStyle 和 currentStyle(ie中) 的兼容性
+    // ie中处理透明度样式 filter:alpha(opacity=60); 将里面的数字提取出来
+    // 把数字加单位的 把单位去掉 数字提取出来返回
+
+    /**
+     *  //获取元素的样式
+     * @param ele 指定元素
+     * @param attr 样式属性
+     */
+    function getCss(ele,attr) {
+        var val;
+        if('getComputedStyle' in window){ // 如果window上有这个属性 就用
+            val = window.getComputedStyle(ele,null)[attr];
+        }else{
+            val = ele.currentStyle[attr];
+            if(attr==='opacity'){
+                val=ele.currentStyle.filter;
+                var reg=/^alpha\(opacity=(\d+(?:\.\d+)?)\)$/;
+                val=reg.test(val)?(reg.exec(val)[1]):1;
+            }
+        }
+
+        var regs=/^-?\d+(\.\d+)?(px|pt|rem|em)?$/;
+        return regs.test(val) ? parseFloat(val):val;
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>getByClass</title>
+</head>
+<body>
+<script>
+    function getByClass(strClass, context) {
+        context = context || document;
+
+        if ('getElementsByClassName' in document) {
+            return context.getElementsByClassName(strClass);
+        }
+
+        var allNode =utils.likeArray(context.getElementsByTagName('*')),
+            classList = strClass.replace(/^ +| +$/g, '').split(/ +/g);
+        for (var i = 0, len = classList.length; i < len; i++) {
+            var curClass=classList[i];
+            for (var j=0;j<allNode.length;j++){
+                var curNode=allNode[j],
+                    nodeClass=curNode.className,
+                    reg=new RegExp('\\b'+curClass+'\\b');
+                if (!reg.test(nodeClass)) {
+                    allNode.splice(j,1);
+                    j--;
+                }
+            }
+        }
+        return allNode;
+    }
+</script>
+</body>
+</html>

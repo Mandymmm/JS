@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>正则replace实战</title>
+</head>
+<body>
+<script>
+    var str='zhufeng2017zhufeng2018';
+    //->把'zhufeng'替换成'zhufengpeixun'
+
+
+    str=str.replace('zhufeng','zhufengpeixun');
+    console.log(str);
+    str=str.replace('zhufeng','zhufengpeixun');
+    console.log(str);
+    //->实现不了替换效果 ==> 所以要配合正则使用
+
+//    所以replace一般和正则结合使用
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var str='haha1@,heihei2@,hehe3@';//-> n@ 替换成 n+@ ==> 'haha1+@,heihei2+@,..'
+    str=str.replace(/()\d@/g,'$1+@');//->如果在替换的字符串中出现了$1/$2/$N...这种字符，代表获取当前捕获的结果中的第一个小分组或者第N个小分组中的内容
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var str='my name is huge!';//-> 把所有单词的首字母变为大写
+    str=str.replace(/\b([a-z])([a-z]*)\b/g,function () {
+//        console.log(arguments);
+        return arguments[1].toUpperCase()+arguments[2];
+    });
+    console.log(str);
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //只捕获不替换
+    var str='my name is huge!';//->检测一个字符串当中 每一个字符出现的次数 以及出现次数最多的字符是谁
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

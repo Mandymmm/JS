@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片延迟加载</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        .oDiv{
+            width:200px;
+            height:200px;
+            margin:1500px auto 500px;
+        }
+        .oDiv img{
+            width:100%;
+            height:100%;
+            background: url("jiazai.gif") no-repeat center;
+            background-size: 50%;
+            opacity: .3;
+            filter:alpha(opacity=30);
+        }
+    </style>
+</head>
+<body>
+
+<div class="oDiv" id="oDiv"><img data-real="1.jpg" src="" alt=""></div>
+<script src="../../../utils.js"></script>
+<script>
+    /*
+    * 窗口一屏的高度(clientHeight)+scrollTop >= 图片元素最底边到页面最顶端的距离 （img距离body的上偏移offsetTop+img自身高度的offsetHeight)
+    * 说明img此时完全出现在宽口中
+    * */
+
+    var winH=utils.win('clientHeight');// 获取浏览器窗口一屏的高度
+    var oDiv=document.getElementById('oDiv');
+    var Img=oDiv.getElementsByTagName('img')[0];
+    var oDivTop=utils.offset(oDiv).top;
+    var oDivHei=oDiv.offsetHeight;
+    window.onscroll=function () {
+        var sTop=utils.win('scrollTop'); // 滚动条实时滚动出去了的距离
+        if(Img.flag) return;// 防止重复加载
+        if(winH+sTop>= oDivTop+oDivHei){
+            var imgSrc=Img.getAttribute('data-real');
+            // 需要先检测图片资源有效性 也就是图片路径能不能用 能用再将它赋给真实路径
+            var tempImg=document.createElement('img');
+            tempImg.src=imgSrc;
+            tempImg.onload=function () { //如果图片加载成功则触发  然后再让页面中加载图片
+//                console.log('加载成功');
+                Img.src=imgSrc;// 让图片的路径变为真实路径
+                Img.flag=true;// 设置一个自定义属性 标识是否加载成功 true表示加载过并成功
+                fadeIn(Img);// 加载的时候增加渐变效果
+            }
+            tempImg.onerror=function () { // 图片加载失败则触发
+//                console.log('加载失败');
+            }
+        }
+    };
+    // 图片渐变
+    function fadeIn(img) {
+        var timer = setInterval(function () {
+            var op=utils.getCss(img,'opacity');
+            if(op>=1){
+                clearInterval(timer);
+                return;
+            }
+            op+=0.2;
+            utils.setCss(img,'opacity',op);
+        },100)
+    }
+
+</script>
+</body>
+</html>

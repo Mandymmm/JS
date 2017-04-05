@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="box">
+    <span>1</span>
+    <span>2</span>
+    <span>3</span>
+    <span>4</span>
+    <span>5</span>
+    <a href="">
+        <span></span>
+    </a>
+    <a href=""></a>
+    <!--注释-->
+    <a href=""></a>
+</div>
+<script>
+    /*
+    * getElementsByTagName：它的筛查范围是当前上下文的后代元素(子子孙孙)
+    *
+    * childNodes：获取所有的子节点(包含元素、文本、注释等)
+    *
+    * children：获取所有的元素子节点， 但是在IE6-8中和标准浏览器中获取的结果不统一(IE低版本浏览器会把注释节点也当做元素节点获取到) 需要处理兼容
+    *
+    *
+    *
+    * */
+
+    var oBox=document.getElementById('box');
+
+
+
+
+    /*
+     *
+     * 1.先获取所有的元素子节点
+     *   -> 思路：先获取当前容器下的所有子节点，然后循环进行筛选，筛选出nodeType===1的，这些就是元素子节点，把这些存放在一个数组容器中
+     * 2.如果传递了标签名，再进行二次过滤
+     *   -> 思路：如果传递了tagName，我们循环上一步获取到的元素子节点，找到标签名和传递进来的tagName相同的那一项，然后存储起来（也可以找到不同的，把不一样的去掉）
+     * */
+
+    /**
+     * children：获取当前容器(元素)所有的元素子节点(在所有的子代元素中进行筛选)，
+     *          而且可以指定具体的标签名：假设传递了一个叫做div的标签名，就是先获取所有的子代元素标签，然后再把叫做div的筛选出来 => JQ的children也是这个意思，只是不仅仅支持标签名的筛选，还可以支持样式类名等更复杂的筛选
+     *
+     * @parameter
+     *      curEle：当前需要操作的元素(容器)
+     *      tagName：[string] 进行二次筛选的标签名
+     *
+     * @return
+     *      [array] 获取到的元素集合
+     *
+     */
+    function children(curEle, tagName) {
+        var allNodes = curEle.childNodes;
+        var elementsArray = [];
+        for (var i = 0; i < allNodes.length; i++) {
+            var curNode = allNodes[i];
+            if (curNode.nodeType === 1) {
+                elementsArray.push(curNode);
+            }
+        }
+        if (typeof tagName !== 'undefined') {
+            for (var j = 0; j < elementsArray.length; j++) {
+                var curEle = elementsArray[j],
+                    curName = curEle.tagName.toUpperCase();
+                if (!tagName === curName.toUpperCase()) {
+                    elementsArray.splice(j, 1);
+                    j--;
+                }
+            }
+        }
+        return elementsArray;
+    }
+
+
+
+
+    /*
+    * 思考题：
+    *
+    * JQ中常用的
+    *
+    * */
+</script>
+</body>
+</html>

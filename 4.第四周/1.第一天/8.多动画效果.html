@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>多动画效果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #oBox {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            background: red;
+        }
+
+        button {
+            width: 80px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            margin: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+<div id="oBox"></div>
+<script src="../../3.第三周/utils1.js"></script>
+<script>
+    var oBox = document.getElementById('oBox');
+
+    /**
+     * Linear 匀速公式
+     * @param t  当前时间
+     * @param b  起始位置
+     * @param c  需要运动的总路程
+     * @param d  总时间
+     * @return {*}
+     * @constructor
+     */
+    function Linear(t, b, c, d) {
+        return t / d * c + b;
+    }
+
+//    目标值 top left
+//关于left的动画参数：
+    //起始位置
+    var begin = utils.css(oBox, 'left');
+    //最大left值(包含起始位置的left值)
+    var maxLeft = utils.win('clientWidth') - oBox.offsetWidth;
+    //需要运动的总路程
+    var change = maxLeft - begin;
+//    关于top的动画参数：
+    var beginTop = utils.css(oBox,'top');
+    var maxTop = utils.win('clientHeight') - oBox.offsetHeight;
+    var changeTop = maxTop - beginTop;
+    var duration = 2000;//总时间
+    var time = null;// 记录当前时间
+
+    //实现动画
+    oBox.timer = setInterval(function () {
+        time += 10;
+        if (time >= duration) {
+            utils.css(oBox, 'left', maxLeft);
+            utils.css(oBox, 'top', maxTop);
+            clearInterval(oBox.timer);
+            return;
+        }
+        //求出当前时间 所处的位置
+        var curLeft = Linear(time, begin, change, duration);
+        var curTop = Linear(time, beginTop, changeTop, duration);
+        utils.css(oBox,'left',curLeft);
+        utils.css(oBox,'top',curTop);
+
+    }, 10);
+
+
+
+
+
+    /*
+    * 实现动画 需要：
+    *   time 当前时间
+    *   begin 起始位置值
+    *   change 需要变化的值
+    *   duration 过渡时间(值变化需要的总时间)
+    *
+    *   ==> 封装一个方法  传递的参数： 当前运动元素，Object(存放目标值)，值变化需要的总时间(duration)
+    *
+    * */
+
+    function animate(curEle,target,duration) {
+        var begin = {};//存储相应属性起始值
+        var change = {};//存储相应属性变化值
+
+        curEle.timer = setInterval(function () {
+
+        },10);
+
+    }
+
+
+    animate(oBox, {
+        left: 800,
+        top: 500,
+        opacity: 1
+    }, 2000)
+
+
+</script>
+</body>
+</html>

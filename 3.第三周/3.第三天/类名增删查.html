@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>类名增删查</title>
+</head>
+<body>
+<div id="oDiv" class="c1 c2 c3"></div>
+
+<script>
+    var oDiv=document.getElementById('oDiv');
+   /*
+    //h5提供的API  ie6-9以下不兼容
+    oDiv.classList.remove('c2');
+    oDiv.classList.add('c5');
+    oDiv.classList.toggle('c6');
+    oDiv.classList.toggle('c1');// 传多个参数怎么传？？？？？？？？
+    */
+
+   
+   //查看当前元素存不存在指定class  通过正则匹配  存在返回true 不存在返回false
+    function hasClass(ele,cName) {
+        return (new RegExp('(^| )'+cName+'( |$)')).test(ele.className);
+    }
+    console.log(oDiv,'c3');
+
+
+    //增加类名
+    function addClass(ele,cName) {
+        cName=cName.replace(/^ +| +$/);// 将传入的字符串首尾空格去除
+        var arrName=cName.split(/ +/);// 根据空格分隔成数组的每一项
+        for (var i=0;i<arrName.length;i++){
+            if(!hasClass(ele,arrName[i])){
+                ele.className += ' '+arrName[i];
+            }
+        }
+    }
+    addClass(oDiv,'a5 a6 a3');
+    addClass(oDiv,'class1');
+
+
+    //删除类名
+    function removeClass(ele,cName) {
+        cName=cName.replace(/^ +| +$/);
+        var arrName=cName.split(/ +/);
+        for (var i=0;i<arrName.length;i++){
+            var cur=arrName[i];
+            if(hasClass(ele,cur)){
+                var reg=new RegExp('(^| )'+cur+'( |$)');
+                ele.className=ele.className.replace(reg,'')
+            }
+        }
+    }
+    removeClass(oDiv,'c1 c2');
+</script>
+</body>
+</html>

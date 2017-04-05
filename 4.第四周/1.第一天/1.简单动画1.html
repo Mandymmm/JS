@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简单动画1 匀速运动</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        #oBox{
+            width:100px;
+            height:100px;
+            position: absolute;
+            top:0;
+            left: 0;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+<div id="oBox">
+
+</div>
+<script src="../../3.第三周/utils1.js"></script>
+<script>
+    var oBox=document.getElementById('oBox');
+    //简单匀速运动
+    // 在规定的时间内(2000ms)  以匀速运动到 最右边边界
+
+    var duration=2000;// 总时间
+    var maxLeft=utils.win('clientWidth') - oBox.offsetWidth;//left最大值 ->总路程
+    var step = maxLeft/duration *10 ;//路程/时间  每毫秒的平均速度  step ->每一毫秒走多长
+
+    //控制的是left让它平移  每一毫秒 在当前自身left的基础上加上step
+    var timer = setInterval(function () {
+        var l = utils.css(oBox,'left');// 获取当前的left值
+        if(l >= maxLeft) { // 当l为最大left值时说明已经到达边界 就可以结束运动
+            utils.css(oBox,'left',maxLeft);// 将oBox的left设置为最大值，目的是为了叠加之后有不到最大值的情况也可以实现最终效果
+            clearInterval(timer);
+        }
+        l += step;// 每毫秒left值递增step
+        utils.css(oBox,'left',l);
+    },10);
+
+</script>
+</body>
+</html>

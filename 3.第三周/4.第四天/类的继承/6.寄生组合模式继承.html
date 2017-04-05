@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>寄生组合模式继承</title>
+</head>
+<body>
+<script>
+    //    寄生组合模式继承： 其中通过call可以继承父类中的私有属性  利用Object.create可以继承父类的公有属性  从而实现公有属性和私有属性继承分明
+    //但是create在IE8以下不兼容
+    function A() {
+        this.name = 'nameA';
+    }
+    A.prototype.say = function () {
+        console.log('hello world');
+    }
+    function B() {
+//        A.call(this); // call继承 只能继承父类中的私有属性
+    }
+    //Object.create 返回一个新对象作为B的原型 然后这个新对象的__proto__ == A.prototype
+//    B.prototype = Object.create(A.prototype);
+    B.prototype=objectCreate(A.prototype);
+    console.log(B.prototype.__proto__ === A.prototype);// true
+    var b = new B();
+    //    console.log(b.name);// 继承过来的私有属性
+    b.say();// 继承过来的A类公有属性
+
+    // 解决Object.create的兼容性
+    function objectCreate(obj) {
+        function Fn() {
+        };
+        Fn.prototype = obj;
+        return new Fn();// new Fn 这个实例的__proto__=Fn.prototype = obj
+    }
+</script>
+</body>
+</html>

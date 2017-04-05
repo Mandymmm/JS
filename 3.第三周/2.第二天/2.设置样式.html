@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设置样式</title>
+</head>
+<body>
+<div id="oDiv" style="width: 200px;height: 400px"></div>
+
+<script>
+    //元素.style[attr]=属性值
+    var oDiv = document.getElementById('oDiv');
+    //其他浏览器 opacity  ie中： filter:alpha(opacity=60);
+    // float  元素.CSSFloat=val; // 解决老版本的火狐和谷歌里面 设置浮动的时候
+    // ie中设置浮动： 元素.style.styleFloat = val
+    // 加单位  如果设置的时候不带单位但是需要有单位的value 我们给加上单位 预防设置值的时候没有加单位
+
+    /**
+     * setCss 给元素设置样式
+     * @param ele  要设置属性的元素
+     * @param attr  要设置的属性
+     * @param val  样式的属性值
+     */
+    function setCss(ele, attr, val) {
+        if (attr === 'opacity') { // 对透明度的处理
+            ele.style['opacity'] = val; // 其他浏览器
+            ele.style['filter'] = 'alpha(opacity=)' + val * 100 + ')'; // ie 低版本
+            return;
+        }
+        if (attr === 'float') { //设置浮动的时候  直接写oDiv.style.float 其实也可以 但是为了照顾老版本浏览器
+            ele.style.cssFloat = val; // 为了兼容老版本火狐  这样写其他标准浏览器也支持 为了照顾老版本
+            ele.style.styleFloat = val; // ie 低版本
+            return;
+        }
+        // 如果是这些属性  为确保传递进来的值 有单位  如果是百分比的话 就自己传值的时候加上%
+        var reg = /^width|height|top|bottom|left|right|((margin|padding)(Top|Left|Bottom|Right)?)$/;
+        if (reg.test(attr)) {
+            if (!isNaN(val)) {
+                val += 'px';
+            }
+        }
+        ele.style[attr] = val;
+    }
+    setCss(oDiv, 'width', 100);
+</script>
+</body>
+</html>

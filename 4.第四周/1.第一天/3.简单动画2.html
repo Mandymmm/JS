@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简单动画2 匀速运动公式</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        #oBox{
+            width:100px;
+            height:100px;
+            position: absolute;
+            top:0;
+            left: 0;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+<div id="oBox">
+
+</div>
+<script src="../../3.第三周/utils1.js"></script>
+<script>
+    var oBox=document.getElementById('oBox');
+    //简单匀速运动
+    // 在规定的时间内(2000ms)  以匀速运动到 最右边边界
+
+    var duration=2000;// 总时间
+    //当前时间/总时间 = 当前走的路程/总路程
+    //=> 当前走的路程 = 当前时间/总时间 * 总路程
+    //=> 10ms时  当前走的路程 = 当前时间/总时间 * 总路程
+    //=> 20ms时  当前走的路程 = 当前时间/总时间 * 总路程
+    //=> 30ms时  当前走的路程 = 当前时间/总时间 * 总路程 ...
+
+    //先获取当前时刻起始位置
+    var begin=utils.css(oBox,'width');
+    //left最大值
+//    var maxLeft=utils.win('clientWidth') - oBox.offsetWidth;
+    //要走的总路程 = left最大值 - 当前时刻起始位置
+    var change = 800 - 100;
+    //记录当前的时间
+    var time = null;
+
+
+    /*
+     * 匀速运动公式
+     *   根据所花费的时间 先求出当前所移动的距离(所改变的left值) t/duration * c
+     *   然后求出此时的left值为多少   起始位置的left值 + 移动距离
+     *
+     * */
+    function Linner(t,b,c,duration) {
+        return t/duration * c + b;// 当前时间的left值 -> 目前所走的路程 + 起始位置的left值
+    }
+
+
+    var timer =setInterval(function () {
+        time += 10;
+        if (time >= duration) {
+            utils.css(oBox,'width',800);
+            clearInterval(timer);
+            return;
+        }
+        var curLeft = Linner(time,begin,change,duration);
+        utils.css(oBox,'width',curLeft);
+    },10);
+</script>
+</body>
+</html>

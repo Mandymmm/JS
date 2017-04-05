@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>通过类名获取元素</title>
+</head>
+<body>
+<ul id="oUls">
+    <li class="li1 li2 li3"></li>
+    <li class="li1 li3"></li>
+    <li class="li2 li3"></li>
+    <li class="li1 li5 li3"></li>
+    <li class="li1 li2"></li>
+</ul>
+<script>
+    /*getElementsByClassName 有兼容性  自己封装一个getByClass方法 实现可以通过类名获取到元素*/
+
+//    两个参数 用来获取类名 获取的上下文范围 (默认为document)
+    /**
+     * getByClass  通过类名获取元素
+     * @param cName 类名
+     * @param context 获取的上下文范围
+     */
+
+        //先通过context.getElementsByTagName('*') 获取到页面中指定上下文范围内的所有元素
+        //从里面通过className 筛选出来我要找的元素
+
+//    var eles=document.getElementsByTagName('*');
+
+
+
+    var oUls=document.getElementById('oUls');
+    function getByClass(cName,context) {
+        context = context || document;// 处理上下文 如果没传默认是document
+        //先把cName 字符串首尾空格去掉 --- 因为传进来的如果首尾有空格 拆分成数组的时候 会有影响 为了防止先去除首尾空格
+        cName = cName.replace(/^ +| +$/g,'');// 'li1 li2 li3'
+        // 将去除首尾空格后的cName 根据空格拆分成数组中的每一项
+        var classArr = cName.split(/ +/);// ['li1','li2','li3']
+//        console.log(classArr);
+        //获取所有context上下文中的元素
+        var eles=context.getElementsByTagName('*');
+//        console.log(eles);
+        //取出classArr ['li1','li2','li3']中每一项 拼接成正则 再去eles中筛选class名匹配的元素 放到一个数组容器中
+        for (var i=0;i<classArr.length;i++){
+            var reg=new RegExp("(^| )"+classArr[i]+"( |$)");// 匹配页面中的元素class名的正则
+//            console.log(reg);
+            var nameArr=[];
+            for (var j=0;j<eles.length;j++){ //把所有元素的className 依次取出来 和我们当前这一轮拼成的要找的class的正则进行匹配筛选
+                var eleName=eles[j].className;
+                if (reg.test(eleName)) {
+                    nameArr.push(eles[j]); //将class名匹配到的元素添加到nameArr中
+                }
+            }
+            eles=nameArr;
+        }
+        return eles;
+    }
+
+    console.log(getByClass(' li1 li2 li3  ', oUls));;
+    //先用 li1 去匹配所有eles中的 className是li1的元素  li1匹配完后的数组 listArr
+    //在listArr里面再筛选和li2匹配的className是li2的元素  li2匹配完后的数组 listArr
+    //在listArr里面再筛选和li3匹配的className是li3的元素  li3匹配完后的数组 listArr
+
+
+
+    // 'li1 li5 li3'页面中元素的class名
+    //我们生成的正则  用来匹配页面中元素class名的  class名有几种情况：
+    // -> 1. 有可能像li1一样的 自身作为开头 后面是个空格
+    // -> 2. 有可能像li5一样的 前后都有空格
+    // -> 3. 有可能像li3一样的 空格
+
+
+
+
+    //字面量创建方式  无法在正则中拼接变量
+    //new RegExp 实例创建方式 可以拼接变量
+    var cn='li2';// 想要的正则 => /li2/g
+    var reg=/cn/g;
+    console.log(reg);// /cn/g
+    var reg1=new RegExp(""+cn+"");
+    console.log(reg1);
+    console.log(reg.test('li1 li2 li3'));
+    console.log(reg1.test('li1 li2 li3'));
+
+</script>
+</body>
+</html>

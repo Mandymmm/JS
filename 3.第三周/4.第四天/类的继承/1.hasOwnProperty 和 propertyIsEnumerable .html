@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hasOwnProperty propertyIsEnumerable</title>
+</head>
+<body>
+<script>
+    //可枚举和不可枚举
+    //  枚举：一一列举出来
+    // 可枚举可以用for in 语句遍历列举出来的
+    var obj={name:'zhufeng'};
+    Object.prototype.say='hello';
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) { // 遍历对象时 通常会用hasOwnProperty ==> 预防将原型上可枚举的其他属性遍历出来
+            console.log(key);
+        }
+    }
+
+    // propertyIsEnumerable 检测属性是不是当前对象可枚举的自身属性 （可枚举 自身）
+    for (var key in obj) {
+        console.log(key);
+        console.log(obj.propertyIsEnumerable(key));
+    }
+
+
+    for (var key in obj) {
+        if (obj.propertyIsEnumerable(key)) {  // 可以实现与hasOwnProperty相同的效果 -> 只遍历当前对象可枚举的私有属性
+            console.log(key);
+        }
+    }
+
+    // 数组arr的length是arr的自身属性 但是 是不可枚举的
+    var arr=[1,2];
+    console.log(arr.propertyIsEnumerable('length')); // ->false
+
+    /*
+    * 以后在遍历对象的时候 要加一个判断 用propertyIsEnumerable或者hasOwnProperty 来检测属性是不是当前对象的可枚举的自身属性 (可枚举的 并且是 自身的)
+    * */
+
+
+
+</script>
+</body>
+</html>

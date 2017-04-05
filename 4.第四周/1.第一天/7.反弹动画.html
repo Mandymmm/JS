@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>反弹动画</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        #oBox{
+            width:100px;
+            height:100px;
+            position: absolute;
+            top:60px;
+            left: 0;
+            background: red;
+        }
+        button{
+            width:80px;
+            height:30px;
+            text-align: center;
+            line-height: 30px;
+            margin: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+<div id="oBox"></div>
+<button type="button">向左</button>
+<button type="button">向右</button>
+<script src="../../3.第三周/utils1.js"></script>
+<script>
+    /*
+    * 点击向右 向右动 加10
+    * 点击向左 向左动 +10
+    * */
+    var oBox=document.getElementById('oBox');
+    var btns=document.getElementsByTagName('button');
+    var btnLeft=btns[0];
+    var btnRight=btns[1];
+
+    var minLeft = 0;// 最小left值
+    var maxLeft = utils.win('clientWidth') - oBox.offsetWidth;// 最大left值
+
+    btnLeft.onclick=function () {  //向左走
+        move(minLeft);
+    };
+
+    btnRight.onclick=function () {  //向右走
+        move(maxLeft);
+    };
+
+
+    //var timer=null;
+    // 动画定时器要共享 放在全局里 不能放在私有作用域里  如果放在私有作用域里 点击向左和向右形成的是两个私有作用域里的两个定时器  在动画执行之前清除上一次的定时器时不能清除B除自身作用域之外的定时器  但是定义在全局里不安全  可以把定时器timer储存在当前执行动画的元素 自身的自定义属性上  oBox.timer
+    function move(target) {
+        clearInterval(oBox.timer);// 清除上一次的定时器  清除上一次的动画  避免动画累积
+        var curLeft = utils.css(oBox,'left');
+        oBox.timer = setTimeout(function () {
+            //如果当前left值 大于 传的目标值target ，则向左走  到达目标值
+            //如果当前left值 小于 传的目标值target ，则向右走  到达目标值
+            if (curLeft > target) {
+                curLeft-=10;
+                if (curLeft <= target) {
+                    utils.css(oBox,'left',0);
+                    clearTimeout(timer);
+                    return;
+                }
+            }else if (curLeft < target) {
+                curLeft+=10;
+                if (curLeft >= target) {
+                    utils.css(oBox,'left',target);
+                    clearTimeout(timer);
+                    return;
+                }
+            }
+            utils.css(oBox,'left',curLeft);
+        },10);
+    }
+
+
+</script>
+</body>
+</html>

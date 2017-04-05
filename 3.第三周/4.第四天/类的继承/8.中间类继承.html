@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>中间类继承</title>
+</head>
+<body>
+<script>
+    //中间类继承：通过使用__proto__   但是在IE中__proto__被屏蔽了
+    var arr=[1,2,3];
+    arr.shift();
+    console.log(arr);
+    console.log(arr.__proto__.shift === Array.prototype.shift);
+    console.log(arr.__proto__ === Array.prototype);
+
+    function add() {
+        // 类数组的__proto__ 指向了Array.prototype
+        arguments.__proto__=Array.prototype;
+        arguments.shift();
+        console.log(arguments);// [2,3,4,5]
+    }
+    add(1,2,3,4,5);
+
+    function sorts() {
+        arguments.__proto__=Array.prototype;
+        arguments.sort();
+        console.log(arguments);// [2, 3, 6, 7, 9]
+    }
+    sorts(6,9,7,3,2);
+</script>
+</body>
+</html>

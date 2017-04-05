@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>字符串常用方法</title>
+</head>
+<body>
+<script>
+    var str='hello world! my name is xxx, I am studying javascript ~ ';
+    console.log(str.charAt(2));
+    console.log(str.charCodeAt(2));
+
+//    var reg=/^\d+$/;
+
+    var str1='hahbeq';
+    var reg = /[abc]/;
+    console.log(str1.match(reg));//->["a", index: 1, input: "hahbeq"] 只匹配到了一个a 而b并没有输出
+
+
+    var str1='hahbeq';
+    var reg = /[^abc]/;
+    console.log(str1.match(reg));//->["h", index: 0, input: "hahaeq"] 只匹配到第一个h
+</script>
+</body>
+</html>

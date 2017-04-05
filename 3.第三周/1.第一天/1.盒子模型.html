@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>盒子模型</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #outer {
+            width: 300px;
+            height: 300px;
+            margin-left: 200px;
+            padding: 20px;
+            border: 5px solid orange;
+            border-left: 10px solid orange;
+            border-top: 15px solid orange;
+        }
+
+        #inner {
+            width: 200px;
+            height: 200px;
+            margin: 50px;
+            border: 2px solid palegreen;
+        }
+    </style>
+</head>
+<body>
+<div id="outer">
+    <div id="inner"></div>
+</div>
+<script>
+    //盒子模型：JS中提供获取元素的样式的属性值
+    var outer = document.getElementById('outer');
+    var inner = document.getElementById('inner');
+
+    //1.clientWidth ： 内容宽度+左右padding
+    //2.clientHeight ： 内容高度+上下padding
+    console.log(outer.clientWidth);
+    console.log(outer.clientHeight);
+
+    //3.clientLeft : 获取元素 左边框宽度
+    //4.clientTop : 获取元素 上边框宽度
+    console.log(outer.clientLeft);
+    console.log(outer.clientTop);
+
+    //5.offsetWidth ：clientWidth+左右边框宽度
+    //6.offsetHeight ：clientHeight+上下边框宽度
+    console.log(outer.offsetWidth);
+    console.log(outer.offsetHeight);
+
+
+    //7. scrollWidth
+    //8. scrollHeight
+
+    //    在没有溢出的情况下 :
+    // scrollWidth=clientWidth
+    // scrollHeight=clientHeight(需要html和body  height 100%)
+
+    //    在有溢出的情况下 :
+    // scrollWidth=clientWidth(可视窗口宽度) + 左右溢出内容部分(最大值)(左右滚动条)
+    // scrollHeight=clientHeight(可视窗口高度) + 上下溢出内容部分(最大值)(上下滚动条)
+
+    console.log(document.body.scrollWidth);
+    console.log(document.body.scrollHeight);
+
+    //9.scrollLeft : 左右滚动条 可滚动区域(文档左右溢出部分) 默认为0  在控制台控制值的变化 可以控制页面的滚动条滑动
+    //10.scrollTop ：上下滚动条 可滚动区域(文档上下溢出部分)
+    //        【只有这两个是既可以获取值，又可以设置值(自定义值)，其他的都是只可以获取】
+    var winW = document.body.clientWidth + document.body.scrollLeft;
+    console.log(document.body.scrollWidth === winW);
+    console.log(document.body.scrollHeight);
+
+
+    //获取文档的一些盒模型样式属性值  既可以获取又可以设置(传一个参数是获取，传两个参数是设置) [只scrollLeft和scrollTop可以设置值]
+    function win(attr, val) {
+        if (typeof val === 'undefined') { //如果第二个参数没传 就是获取值
+            return document.documentElement[attr] || document.body[attr];
+        }
+        //否则就是设置值
+        document.documentElement[attr] = val;
+        document.body[attr] = val;
+    }
+
+    setTimeout(function () {
+        console.log(win('scrollTop', 500));
+    }, 1000);
+
+
+</script>
+</body>
+</html>

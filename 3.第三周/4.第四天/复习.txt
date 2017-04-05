@@ -1,0 +1,14 @@
+1.js盒子模型中的常用属性
+
+
+
+
+    -> offset：获取当前元素相对于body的偏移 {top:xxx,left:xxx}
+    -> 获取当前元素具体的某一个样式值：
+        curEle.style.xxx: 只能获取写在元素行内上的样式
+        getComputedStyle/currentStyle: 获取当前元素所经过浏览器计算的样式
+        => getCss
+        => setCss
+        => setGroupCss
+        => css -> JQ中的css方法
+

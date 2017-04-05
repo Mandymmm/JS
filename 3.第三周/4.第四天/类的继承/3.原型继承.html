@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>原型继承</title>
+</head>
+<body>
+<script>
+    // 继承：子类继承父类的属性和方法
+    // 比如 A类和B类 在A类中有一个say方法，B类想继承过来给B的实例使用
+
+
+    //1.原型继承（原型链继承）：修改原型链查找顺序
+    //   -> 让子类B的原型作为A类的一个实例
+    //   -> 子类B把父类A中的公有/私有属性和方法 全部继承过来 作为子类B的公有属性和方法
+    function A() {
+        this.name1 = 'zhufeng';
+        this.info=function () {
+            console.log('info');
+        }
+    }
+    A.prototype.say=function () {
+        console.log('my name is' + this.name1);
+    };
+
+    B.prototype=new A(); // B类的原型等于A类的一个实例
+    function B() {
+
+    }
+
+/*
+    var b1=new B();
+    var b2=new B();
+    console.log(b1.name1);// zhufeng A的实例的私有属性
+    b1.say();// A的实例的公有属性
+    console.log(b2.say===b1.say);// true
+    console.log(b2.info===b1.info);// true
+    console.log(b1);
+    // b.__proto__ // B类的实例__proto__ 指向了A的实例(B的原型)
+    console.log(b1.__proto__.__proto__.say===A.prototype.say);// true
+    */
+
+
+    //原型继承中 子类不光可以继承父类的属性和方法来使用  子类也可以修改父类的原型上的属性和方法  但是会影响父类的其他实例 --> 子类重写父类 ==> 类的多态(重写)
+
+    var b1=new B();
+    b1.say();
+    // 根据原型链找到A类原型上的say方法
+    console.log(b1.__proto__.__proto__.say === A.prototype.say);// true
+
+ /* b1.__proto__.__proto__.say = function () {
+       console.log('已经被B的实例所修改');
+    };*/
+    B.prototype.__proto__.say = function () {
+        console.log('已经被B的实例所修改');
+    };
+
+</script>
+</body>
+</html>

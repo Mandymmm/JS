@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    list-style: none;
+}
+
+html, body {
+    color: #555;
+    font-size: 14px;
+    font-family: "\5FAE\8F6F\96C5\9ED1", Helvetica, sans-serif;
+}
+
+.box {
+    margin: 20px;
+    width: 500px;
+}
+
+.box .tab {
+    position: relative;
+    top: 1px;
+}
+
+.box .tab:after { /*清除浮动*/
+    display: block;
+    content: '';
+    clear: both;
+}
+
+.box .tab li {
+    float: left;
+    margin-right: 10px;
+    padding: 0 10px;
+    line-height: 30px;
+    border: 1px solid #CCC;
+    cursor: pointer;
+}
+
+.box .tab li.select {
+    background: lightblue;
+}
+
+.box .content { /*有空格是后代中具有这个样式的元素*/
+    display: none;
+    height: 200px;
+    border: 1px solid #CCC;
+}
+
+.box .content li {
+    padding-left: 20px;
+    line-height: 40px;
+}
+
+.box .content.select { /*没有空格是同时拥有两个样式的*/
+    display: block;
+}

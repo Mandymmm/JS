@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>冒充对象继承</title>
+</head>
+<body>
+<script>
+    // 冒充对象继承：在B的私有函数体中 创建一个父类A的实例temp(存储的是A类中私有和公有的属性和方法)  把temp当做一个普通的对象 循环遍历出每一项 作为B类中的实例的私有属性
+    // 冒充对象继承 将父类中公有和私有的属性和方法 继承过来 ，作为子类的实例的私有属性和方法
+    function A() {
+        this.name = 'nameA';
+    }
+    A.prototype.say = function () {
+        console.log('hello world');
+    }
+    function B() {
+        var temp=new A();// 在B的函数体中 创建一个A类的一个实例temp
+        for (var key in temp) { // 把temp当做一个普通对象遍历
+            console.log(key);
+            this[key] = temp[key];// 将temp存储的公有和私有的属性和方法 复制一份 给B中的私有属性
+        }
+    }
+    var b=new B();
+    var c=new B();
+    console.log(b.say === c.say);// true 因为b和c继承过来的都是A上的同一个say
+    console.log(b.name === c.name);// true
+    // 继承过来的say 都是每个实例上的一个私有属性
+    console.log(c);
+    console.log(b);
+    console.log(b.hasOwnProperty('say'));// true
+    console.log(c.hasOwnProperty('say'));// true
+
+</script>
+</body>
+</html>

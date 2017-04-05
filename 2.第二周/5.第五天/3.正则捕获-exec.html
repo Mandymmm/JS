@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>正则捕获</title>
+</head>
+<body>
+<script>
+    var str='zhufeng2017peixun2018';
+    var reg=/\d+/;
+    console.log(reg.exec(str));//->["2017", index: 7, input: "zhufeng2017peixun2018"]
+    //通过exec()执行，获取的结果是一个数组(是Array的实例)，第一项是正则捕获的内容，index是捕获开始的索引，input是原始的字符串
+    // 执行一次exec() 只能捕获一次 ，需要捕获多个的话，也需要执行多次
+    console.log(reg.lastIndex);//->0
+    console.log(reg.exec(str));//->['2017'...]
+    console.log(reg.lastIndex);//->0
+    reg.lastIndex=11;
+    console.log(reg.lastIndex);//->11
+    console.log(reg.exec(str));//->['2017'...]
+    //不管执行多少次，捕获到的永远是第一个 ==> 正则的懒惰性  是因为正则里面有一个属性 lastIndex
+
+    //-> reg.lastIndex ：下一次正则捕获的起始索引位置(也就是下一次捕获的时候是从哪开始找的)，第一次捕获的时候值为0，在正则不进行任何处理的情况下，下一次捕获之前这个值依然为0，所以会重复捕获第一个内容
+    //->而且即使我们手动把lastIndex值改了，也没有作用，解决懒惰性只能有一种办法：给正则加全局修饰符g(global)
+
+    //->加上g就可以解决了
+    var str='zhufeng2017peixun2018';
+    var reg=/\d+/g;
+    console.log(reg.exec(str));//->['2017'...]
+    console.log(reg.lastIndex);//->11
+    console.log(reg.exec(str));//->['2018'...]
+    console.log(reg.lastIndex);//->21
+    console.log(reg.exec(str));//->null
+
+
+    //但是具体要捕获多少次，可能不太清楚 ==> 循环捕获
+    var str='zhufeng2017peixun2018yangfan2019qihang2020zhidao9999';
+    var reg=/\d+/g;
+
+    /*
+    var ary=[];
+    var result=reg.exec(str);
+    while (result){ //只要result不为null就一直执行循环
+        ary.push(result[0]);
+        result=reg.exec(str);
+    }
+    console.log(ary);//->["2017", "2018", "2019", "2020", "9999"]
+    */
+    //用字符串里的方法match() 更简单 【用match 正则reg依然要加全局修饰符g，不加g只能捕获第一个】
+    console.log(str.match(reg));//->["2017", "2018", "2019", "2020", "9999"]
+
+    var str='zhufeng2017peixun2018yangfan2019qihang2020zhidao9999';
+    var reg=/\d+/;
+    console.log(str.match(reg));//->["2017", index:0,...]
+
+
+
+    //在正则原型上扩展方法 实现执行一次捕获多次的效果
+    RegExp.prototype.myExecAll=function myExecAll() {
+        var str=arguments[0]||'';//->如果第一个参数值没有传递的话，我们让其默认值为空字符串
+ /*     if (typeof arguments[0] === 'undefined') {
+            str='';
+        }                   */
+
+        //正则只有加g，才能捕获全部，没有加的话我们只让其捕获第一个即可 => 需要判断有没有加g  如果没有加就执行一次 reg.exec(str)  加了就while循环
+        // => 如果reg.global-> true 表明加了g ；如果reg.global-> false 表明没有加g
+        if(!this.global) return this.exec(str);//->如果reg.global是false 就执行return 后面的语句 ； 如果reg.global是true 就执行if下一行的语句 --> 即执行while循环来实现捕获
+        var ary=[],
+            result=this.exec(str);
+        while (result) { //如果result为true 即不为null 就执行循环体
+           ary.push(result[0]);
+           result=this.exec(str);
+        }
+        return ary.length ===0 ? null : ary;//->如果数组长度是0，就返回null；如果长度不为0，就返回这个数组ary
+    };
+//    reg.myExecAll(str);//->用的时候直接调用方法myExecAll
+
+
+    var str = 'zhufeng2017peixun2018yangfan2019qihang2020zhidao9999';
+    var reg = /(\d)+/g;
+    console.log(reg.exec(str));
+    console.log(reg.exec(str));
+    console.log(reg.exec(str));
+
+    console.log(str.match(reg));
+
+
+    var str1 = 'zhufeng2017';
+    var reg = /(\d)+/;//->只捕获一次  不加g
+    console.log(str1.match(reg));
+    //exec每一次捕获的时候不仅可以把大正则匹配的结果捕获到，也可以获取小分组捕获的结果['2017','7'...]，但是不能直接捕获多次
+    //而使用match的时候，如果字符串需要被捕获【多次】的话，只能捕获到大正则的，小分组的是不能捕获的（但是如果使用match进行捕获的字符串只需要捕获【一次】的话，也可以把小分组的内容捕获到）
+
+
+
+    //replace
+    var str='zhufeng2017peixun2018yangfan2019qihang2020zhidao9999';
+    var reg=/(\d)+/g;
+    //->借用字符串的replace方法(实现字符串的替换)，如果第一项传递的是正则的话，浏览器默认的也会和我们的字符串进行捕获，而且每捕获一次就会触发后面的回调函数执行一次(大部分支持正则的字符串方法，基本上都有这个特点，例如：split...)
+    console.log(reg.exec(str));//->["2017", "7", index: 7, input: "zhufeng2017peixun2018yangfan2019qihang2020zhidao9999"]
+    str.replace(reg,function () {
+        //->当前函数被执行了5次，因为reg和str相匹配的有五项，我们的正则会捕获五次
+        //->每一次执行函数都默认给函数传递了一些参数值：arguments ， arguments存储的值和每一次通过exec捕获的结果一模一样(既有大正则捕获的结果，也有小分组捕获的结果)
+        console.log(arguments);//->输出五次
+        //-> 第一次执行匿名函数的结果 ["2017", "7", 7, "zhufeng2017peixun2018yangfan2019qihang2020zhidao9999"]
+        //-> 第二次执行匿名函数的结果 ["2018", "8", 17, "zhufeng2017peixun2018yangfan2019qihang2020zhidao9999"]...
+        console.log(arguments[0],arguments[1]);//-> 分别输出本次大正则和第一个小分组捕获的结果
+        //-> 第一次执行匿名函数输出结果  2017 7
+        //-> 第二次执行匿名函数输出结果  2018 8
+
+        // return '@';//->在当前的函数中你返回的是什么，就相当于把本次正则匹配的结果替换成什么，如果不写return，就默认把正则捕获到的替换成undefined
+    });
+    console.log(str);
+
+
+
+
+</script>
+</body>
+</html>

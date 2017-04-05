@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>replace</title>
+</head>
+<body>
+<script>
+    /*检测字母出现次数*/
+    var str='my name is zhou xiao tian!';
+    var reg=/(?!\s)[a-z]/g;//->匹配除了空格以外的 一个英文字母
+    var obj={};//把每一次捕获到的字母作为属性名， 对应的次数作为属性值
+    str.replace(reg,function () {
+        var cur=arguments[0]; // cur存的是每次捕获的 字母
+        if(obj[cur]){
+            obj[cur]++;// 如果obj里面有当前属性cur 就将次数累加1
+        }else {
+           obj[cur]=1;// 如果没有就增加一个属性(当前字母)，并且次数赋值为1
+        }
+    });
+
+    var max=0;
+    for(var key in obj){
+        var cur=obj[key]; // 每一个属性的属性值 即当前字母出现次数
+    }
+
+
+    //////////////////////////////////////
+/*
+    var str = 'http://www.zhufengpeixun.cn/index.html?name=zxt&age=28&sex=1';//->'?name=zxt&age=28&sex=1' =>{name:'zxt',age:28,sex:1}   【以后常用】
+    */
+
+
+    var str = 'http://www.zhufengpeixun.cn/index.html?name=zxt&age=28&sex=1';
+    function getParamer(url) {
+        var reg=/([^?&=]+)=([^?&=]+)/g;//-> 首先大正则先匹配到 （）=（）这种等式格式的字符串 ，然后[^?&=] ---等式的等号左右两边 只要不是? 不是& 不是= 就匹配
+        var obj={};
+        url.replace(reg,function () {
+            obj[arguments[1]]=arguments[2];
+        });
+        return obj;
+    }
+
+
+
+
+
+    /////////////////////////////////////////
+    /*
+    var time = '2017-3-26 18:38:4'; //-> '2017年03月26日 18时38分04秒'  / '03-26 18:38' ...
+*/
+
+    var time = '2017-3-26 18:38:4';
+    var timer=time.split(/[- :]/);// 将time字符串按照 - 空格 ： 拆分成数组中的项
+    console.log()
+
+
+
+
+
+    function addZero(val) {
+        return ('0'+val).slice(-2); // 直接在前面加个0  然后用slice截取最后两项
+    }
+  /*  var str='ni&ni&hao';
+    console.log(str3.split(/&/));// 按照&将字符串转化数组*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //================================
+    var str2 = '   my name is zxt     ';//->实现一个myTrim方法去除字符串首尾空格
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //================================
+    var str3 = '12345678';//->'12,345,678' 千分符：从后向前数，数三位加一个逗号
+
+
+
+
+
+
+
+
+
+
+
+//    非空验证： 此处不能为空 --请填写用户名
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
